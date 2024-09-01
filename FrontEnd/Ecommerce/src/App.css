@@ -1,0 +1,100 @@
+:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 240 5.9% 10%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 5.9% 10%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 45%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 5.9% 10%;
+  --destructive: 0 72% 51%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 240 5.9% 10%;
+  --radius: 0.5rem;
+}
+
+/*navbar*/
+.navbar {
+  /* background-color: hsl(var(--card)); */
+  width: 1250px;
+}
+
+/*input-boxes-styling*/
+.input-color {
+  background-color: hsl(var(--muted));
+}
+.input-color:focus {
+  border-color: hsl(var(--border));
+  border: 1.8px solid;
+  outline: none;
+}
+input::placeholder {
+  padding-left: 10px;
+  font-size: 15px;
+}
+.heading-text-color {
+  color: hsl(var(--primary));
+}
+
+/*sign-up-component-styles*/
+.sign-up-button {
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+}
+.card {
+  background-color: hsl(var(--card));
+}
+.sign-up-container {
+  background-color: hsl(var(--border));
+}
+
+/*PRODUCTS-CSS*/
+.bg-container {
+  background-color: hsl(var(--muted));
+}
+
+.products-container {
+  width: 1200px;
+}
+
+.product-heading {
+  color: #108934;
+}
+
+/**PRODUCT-CSS**/
+.product-container {
+  width: 1200px;
+}
+
+.image-container {
+  height: 500px;
+  width: 550px;
+}
+.bg-color {
+  background-color: hsl(var(--card));
+}
+.fav-btn {
+  background-color: white;
+}
+
+/*CART CONTAINER*/
+.cart-container {
+  width: 1200px;
+}
+.cart-image-container {
+  width: 250px;
+  height: 150px;
+}
+.btn {
+  height: 35px;
+  width: 55px;
+  border: 2px solid black;
+}
