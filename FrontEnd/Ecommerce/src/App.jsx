@@ -8,6 +8,7 @@ import Product from "./components/Product";
 import ScrollToTop from "./components/ScrollToTop";
 import NotFoundPage from "./components/NotFoundPage";
 import CartPage from "./components/CartPage";
+import Billing from "./components/Billing";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path='/products' element={<Products />} />
         <Route path='/product/:productId' element={<Product />} />
         <Route path='/cart' element={<CartPage />} />
+        <Route path='/Billing/:totalPrice' element={<Billing />} />
         <Route path='*' element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>

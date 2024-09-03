@@ -98,3 +98,14 @@ input::placeholder {
   width: 55px;
   border: 2px solid black;
 }
+
+/*billing section*/
+.billing-container {
+  background-color: hsl(var(--muted));
+}
+.order-summary-container {
+  border: 0.5px solid grey;
+}
+.btn-color {
+  background-color: hsl(var(--destructive));
+}

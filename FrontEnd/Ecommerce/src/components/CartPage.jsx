@@ -1,9 +1,11 @@
 import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function CartPage() {
   const [cartProducts, setCartProduct] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
+  const navigate = useNavigate();
 
   //increment and decrement quantity
   const onIncrement = async (id) => {
@@ -12,7 +14,6 @@ export default function CartPage() {
     );
     setCartProduct(updatedProductsQuantity);
     const updatedCart = updatedProductsQuantity.find((cart) => cart._id === id);
-    console.log(updatedCart.quantity);
     let res = await fetch("http://localhost:3000/cart/updateQuantity/" + id, {
       method: "PUT",
       headers: {
@@ -148,7 +149,12 @@ export default function CartPage() {
           <h1 className='text-xl product-heading font-bold'>${totalPrice}</h1>
         </div>
         <div className='w-full mt-11'>
-          <button className='sign-up-button w-full h-10 rounded-md'>
+          <button
+            className='sign-up-button w-full h-10 rounded-md'
+            onClick={() => {
+              navigate(`/Billing/${totalPrice}`);
+            }}
+          >
             Proceed to CheckOut
           </button>
         </div>

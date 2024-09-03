@@ -25,13 +25,13 @@ export default function NavBar() {
               Cart
             </a>
             <button
-              className='sign-up-button w-24 h-8 rounded-md'
+              className='sign-up-button w-24 h-7  rounded-md'
               onClick={() => {
                 Cookies.remove("token");
                 navigate("/login");
               }}
             >
-              LogOut
+              Log out
             </button>
           </div>
         ) : (
