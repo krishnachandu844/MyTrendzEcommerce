@@ -4,6 +4,79 @@ import { useParams } from "react-router-dom";
 export default function Billing() {
   const { totalPrice } = useParams();
   const [cartProducts, setCartProduct] = useState();
+  const [responseId, setResponseId] = useState("");
+  const [responseState, setResponseState] = useState([]);
+
+  //loadScript
+  const loadScript = (src) => {
+    return new Promise((resolve) => {
+      const script = document.createElement("script");
+      script.src = src;
+      script.onload = () => {
+        resolve(true);
+      };
+      script.onerror = () => {
+        resolve(false);
+      };
+      document.body.appendChild(script);
+    });
+  };
+
+  //razorpay
+  const createRazorpay = async (amount) => {
+    let data = {
+      amount: amount * 100, // Converting rupees to paise
+      currency: "INR",
+    };
+    console.log("click");
+    let res = await fetch("http://localhost:3000/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    if (res.ok === true) {
+      const data = await res.json();
+      console.log(data);
+      handleRazorPayScreen(data.amount);
+    } else {
+      console.log("error");
+    }
+  };
+
+  //razorpay screen
+
+  const handleRazorPayScreen = async (amt) => {
+    const res = await loadScript("https:/checkout.razorpay.com/v1/checkout.js");
+
+    if (!res) {
+      alert("Some error at razorpay screen loading");
+      return;
+    }
+
+    const options = {
+      key: "rzp_test_QJTNeOoTovszWR",
+      amount: amt,
+      currency: "INR",
+      name: "papaya coders",
+      description: "payment to papaya coders",
+      image: "https://papayacoders.com/demo.png",
+      handler: function (response) {
+        setResponseId(response.razorpay_payment_id);
+      },
+      prefill: {
+        name: "papaya coders",
+        email: "papayacoders@gmail.com",
+      },
+      theme: {
+        color: "#F4C430",
+      },
+    };
+
+    const paymentObject = new window.Razorpay(options);
+    paymentObject.open();
+  };
 
   //cart items
   const init = async () => {
@@ -34,11 +107,13 @@ export default function Billing() {
                 cartProducts.map((product) => (
                   <div key={product.id}>
                     <div className='flex justify-between w-4/5 m-4'>
-                      <div>
+                      <div className='w-4/5'>
                         <h3 className='font-bold'>{product.title}</h3>
                       </div>
-                      <div>
-                        <h3 className='font-bold'>${product.price}</h3>
+                      <div className=''>
+                        <h3 className='font-bold'>
+                          ${parseFloat(product.price)}
+                        </h3>
                         <p>Quantity: {product.quantity}</p>
                       </div>
                     </div>
@@ -59,8 +134,10 @@ export default function Billing() {
               </div>
               <hr />
               <div className='flex justify-between w-4/5 m-4'>
-                <h2>Total</h2>
-                <h2>$219.00</h2>
+                <h2 className='font-extrabold text-xl'>Total</h2>
+                <h2 className='font-extrabold text-xl'>
+                  {parseFloat(totalPrice) + 25.0 + 17.0}
+                </h2>
               </div>
             </div>
             {/* billing address */}
@@ -81,7 +158,9 @@ export default function Billing() {
               </div>
               <br />
               <div className='grid gap-2'>
-                <label htmlFor='address'>Address</label>
+                <label htmlFor='address' className='font-bold'>
+                  Address
+                </label>
                 <textarea
                   name=''
                   id='address'
@@ -90,6 +169,17 @@ export default function Billing() {
                   cols={40}
                   rows={4}
                 ></textarea>
+              </div>
+              <div className='grid gap-2 mt-2'>
+                <h2 className='text-xl font-bold'>Payment Method</h2>
+                <button
+                  className='w-full h-12 rounded-lg text-slate-400 bg-black font-bold'
+                  onClick={() => {
+                    createRazorpay(parseInt(totalPrice));
+                  }}
+                >
+                  PayPal
+                </button>
               </div>
               <button className='btn-color w-full mt-6 h-12 rounded-lg text-white'>
                 Place Order
