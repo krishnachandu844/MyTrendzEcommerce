@@ -9,6 +9,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import NotFoundPage from "./components/NotFoundPage";
 import CartPage from "./components/CartPage";
 import Billing from "./components/Billing";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 function App() {
   return (
@@ -18,11 +19,13 @@ function App() {
       <Routes>
         <Route path='/' element={<Signup />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/products' element={<Products />} />
-        <Route path='/product/:productId' element={<Product />} />
-        <Route path='/cart' element={<CartPage />} />
-        <Route path='/Billing/:totalPrice' element={<Billing />} />
-        <Route path='*' element={<NotFoundPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path='/products' element={<Products />} />
+          <Route path='/product/:productId' element={<Product />} />
+          <Route path='/cart' element={<CartPage />} />
+          <Route path='/Billing/:totalPrice' element={<Billing />} />
+          <Route path='*' element={<NotFoundPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

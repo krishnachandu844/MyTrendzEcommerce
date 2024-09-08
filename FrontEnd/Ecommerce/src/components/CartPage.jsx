@@ -1,11 +1,14 @@
+import Cookies from "js-cookie";
 import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { TailSpin } from "react-loader-spinner";
 
 export default function CartPage() {
   const [cartProducts, setCartProduct] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
+  const token = Cookies.get("token");
 
   //increment and decrement quantity
   const onIncrement = async (id) => {
@@ -18,6 +21,7 @@ export default function CartPage() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify({ quantity: updatedCart.quantity }),
     });
@@ -37,6 +41,7 @@ export default function CartPage() {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({ quantity: updatedCart.quantity }),
       });
@@ -47,6 +52,10 @@ export default function CartPage() {
   const init = async () => {
     let response = await fetch("http://localhost:3000/cartItems", {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     const data = await response.json();
     setCartProduct(data.cart);
@@ -56,6 +65,10 @@ export default function CartPage() {
   const deleteCart = async (cartId, dbCartId) => {
     let res = await fetch("http://localhost:3000/cart/" + dbCartId, {
       method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     if (res.ok == true) {
       let updatedCartItems = cartProducts.filter(
@@ -80,7 +93,7 @@ export default function CartPage() {
     }
   }, [cartProducts]);
 
-  return (
+  return cartProducts ? (
     <div className='bg-container'>
       <div className='cart-container mx-auto'>
         <h1 className='text-4xl pt-3 pb-4 font-bold'>Your Cart</h1>
@@ -159,6 +172,19 @@ export default function CartPage() {
           </button>
         </div>
       </div>
+    </div>
+  ) : (
+    <div className='flex justify-center items-center h-screen'>
+      <TailSpin
+        visible={true}
+        height='200'
+        width='100'
+        color='black'
+        ariaLabel='tail-spin-loading'
+        radius='2'
+        wrapperStyle={{}}
+        wrapperClass=''
+      />
     </div>
   );
 }

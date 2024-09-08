@@ -24,6 +24,7 @@ export default function Billing() {
 
   //razorpay
   const createRazorpay = async (amount) => {
+    console.log(amount);
     let data = {
       amount: amount * 100, // Converting rupees to paise
       currency: "INR",
@@ -175,7 +176,7 @@ export default function Billing() {
                 <button
                   className='w-full h-12 rounded-lg text-slate-400 bg-black font-bold'
                   onClick={() => {
-                    createRazorpay(parseInt(totalPrice));
+                    createRazorpay(parseFloat(totalPrice) + 25.0 + 17.0);
                   }}
                 >
                   PayPal

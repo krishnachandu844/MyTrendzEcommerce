@@ -16,6 +16,30 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //SECRET KEY
 const secret = "SECR@#RT";
 
+//AuthenticateJWt
+
+const authenticateJwt = (req, res, next) => {
+  // const startTime = Date.now();
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+
+    if (token) {
+      jwt.verify(token, secret, (err, user) => {
+        if (err) {
+          res.send(400).json({ message: "Issue with token" });
+        }
+        // const verificationTime = Date.now() - startTime;
+        // console.log(`Token verified in ${verificationTime}ms`);
+        req.user = user;
+        next();
+      });
+    } else {
+      res.send(400).json({ message: "token not found" });
+    }
+  }
+};
+
 //mongoose schemas
 const userSchema = new mongoose.Schema({
   username: String,
@@ -36,14 +60,13 @@ const USER = mongoose.model("USER", userSchema);
 const CART = mongoose.model("CART", cartSchema);
 
 //RazorPay
-
 //order razorpay
 app.post("/orders", async (req, res) => {
   const razorpay = new Razorpay({
     key_id: "rzp_test_QJTNeOoTovszWR",
     key_secret: "zecxgy1A9MnIX6eIRh7xdjVF",
   });
-  console.log(req.body);
+
   const options = {
     amount: req.body.amount,
     currency: req.body.currency,
@@ -127,7 +150,7 @@ app.post("/auth/login", async (req, res) => {
 //cart backend route
 
 //add cart
-app.post("/cart", async (req, res) => {
+app.post("/cart", authenticateJwt, async (req, res) => {
   const { id, title, price, image, quantity } = req.body;
   const newCartItem = new CART({ id, title, price, image, quantity });
   await newCartItem.save();
@@ -135,7 +158,7 @@ app.post("/cart", async (req, res) => {
 });
 
 //delete cart
-app.delete("/cart/:cartId", async (req, res) => {
+app.delete("/cart/:cartId", authenticateJwt, async (req, res) => {
   const { cartId } = req.params;
   const cart = await CART.findByIdAndDelete(cartId);
   if (cart) {
@@ -146,7 +169,7 @@ app.delete("/cart/:cartId", async (req, res) => {
 });
 
 //get cart items
-app.get("/cartItems", async (req, res) => {
+app.get("/cartItems", authenticateJwt, async (req, res) => {
   const cart = await CART.find({});
   if (cart) {
     res.json({ cart });
@@ -156,7 +179,7 @@ app.get("/cartItems", async (req, res) => {
 });
 
 //update quantity
-app.put("/cart/updateQuantity/:cartId", async (req, res) => {
+app.put("/cart/updateQuantity/:cartId", authenticateJwt, async (req, res) => {
   const id = req.params.cartId;
   const { quantity } = req.body;
   const updatedCartItem = await CART.findByIdAndUpdate(
