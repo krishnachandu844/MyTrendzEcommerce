@@ -44,7 +44,8 @@ export default function NavBar() {
             <a href='/cart' className='font-semibold'>
               Cart
               {cartProducts &&
-                (cartProducts.length === 0 ? "" : `(${cartProducts.length})`)}
+                cartProducts.length > 0 &&
+                `(${cartProducts.length})`}
             </a>
             <button
               className='sign-up-button w-24 h-7  rounded-md'

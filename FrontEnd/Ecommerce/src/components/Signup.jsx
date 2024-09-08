@@ -32,14 +32,13 @@ export default function Signup() {
     }
   };
 
-  const handleBlur = (field) => {
+  const handleBlur = (field, value) => {
     // Validate fields on blur
-    if (field === "username") {
-      console.log("click");
+    if (field === "username" && value.trim() === "") {
       setUsernameError(true);
-    } else if (field === "email") {
+    } else if (field === "email" && value.trim() === "") {
       setEmailError(true);
-    } else if (field === "password") {
+    } else if (field === "password" && value.trim() === "") {
       setPasswordError(true);
     }
   };
@@ -63,7 +62,8 @@ export default function Signup() {
               onChange={(e) => {
                 setUserName(e.target.value);
               }}
-              onBlur={() => handleBlur("username")}
+              value={username}
+              onBlur={(e) => handleBlur("username", e.target.value)}
             />
             {usernameError && (
               <p className='text-red-500 font-bold text-sm'>*Required</p>
@@ -83,7 +83,8 @@ export default function Signup() {
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              onBlur={() => handleBlur("email")}
+              value={email}
+              onBlur={(e) => handleBlur("email", e.target.value)}
             />
             {emailError && (
               <p className='text-red-500 font-bold text-sm'>*Required</p>
@@ -105,7 +106,8 @@ export default function Signup() {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              onBlur={() => handleBlur("password")}
+              value={password}
+              onBlur={(e) => handleBlur("password", e.target.value)}
             />
             {passwordError && (
               <p className='text-red-500 font-bold text-sm'>*Required</p>
