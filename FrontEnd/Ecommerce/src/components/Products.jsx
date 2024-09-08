@@ -1,8 +1,10 @@
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { TailSpin } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
 export default function Products() {
+  const token = Cookies.get("token");
   const [products, setProducts] = useState();
   const navigate = useNavigate();
   //onClicking We go to single product
@@ -18,6 +20,7 @@ export default function Products() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(cartData),
     });

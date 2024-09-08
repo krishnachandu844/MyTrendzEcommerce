@@ -1,3 +1,4 @@
+import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -5,7 +6,7 @@ export default function Billing() {
   const { totalPrice } = useParams();
   const [cartProducts, setCartProduct] = useState();
   const [responseId, setResponseId] = useState("");
-  const [responseState, setResponseState] = useState([]);
+  const token = Cookies.get("token");
 
   //loadScript
   const loadScript = (src) => {
@@ -83,6 +84,10 @@ export default function Billing() {
   const init = async () => {
     let response = await fetch("http://localhost:3000/cartItems", {
       method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     });
     const data = await response.json();
     setCartProduct(data.cart);
@@ -174,12 +179,12 @@ export default function Billing() {
               <div className='grid gap-2 mt-2'>
                 <h2 className='text-xl font-bold'>Payment Method</h2>
                 <button
-                  className='w-full h-12 rounded-lg text-slate-400 bg-black font-bold'
+                  className='w-full h-12 rounded-lg text-white bg-black font-bold'
                   onClick={() => {
                     createRazorpay(parseFloat(totalPrice) + 25.0 + 17.0);
                   }}
                 >
-                  PayPal
+                  RazorPay
                 </button>
               </div>
               <button className='btn-color w-full mt-6 h-12 rounded-lg text-white'>
