@@ -8,6 +8,9 @@ export default function Login() {
   const [username, setUserName] = useState();
   const [password, setPassword] = useState();
 
+  const [usernameError, setUsernameError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+
   const onClickLogin = async () => {
     let response = await fetch("http://localhost:3000/auth/login", {
       method: "POST",
@@ -22,6 +25,16 @@ export default function Login() {
       navigate("/products");
     } else {
       console.log("Error");
+    }
+  };
+
+  const handleBlur = (field) => {
+    // Validate fields on blur
+    if (field === "username") {
+      console.log("click");
+      setUsernameError(true);
+    } else if (field === "password") {
+      setPasswordError(true);
     }
   };
 
@@ -46,7 +59,11 @@ export default function Login() {
               onChange={(e) => {
                 setUserName(e.target.value);
               }}
+              onBlur={() => handleBlur("username")}
             />
+            {usernameError && (
+              <p className='text-red-500 font-bold text-sm'>*Required</p>
+            )}
           </div>
           <br />
           <div className='space-y-2'>
@@ -64,7 +81,11 @@ export default function Login() {
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
+              onBlur={() => handleBlur("password")}
             />
+            {passwordError && (
+              <p className='text-red-500 font-bold text-sm'>*Required</p>
+            )}
           </div>
           <div className='mt-10'>
             <button
