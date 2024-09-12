@@ -62,6 +62,7 @@ export default function Favorite() {
     );
     if (response.ok === true) {
       const data = await response.json();
+      console.log(data);
       setFavoriteItems(data);
     } else {
       console.log("Error");

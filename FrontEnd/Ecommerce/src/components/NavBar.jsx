@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import "../App.css";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 export default function NavBar() {
@@ -29,10 +29,17 @@ export default function NavBar() {
   return (
     <div className='sticky top-0 z-10 bg-white'>
       <nav className='flex justify-between  p-6 items-center h-14 navbar mx-auto'>
-        <h1 className='text-2xl font-black'>MyTrends</h1>
+        <h1
+          className='text-2xl font-black cursor-pointer'
+          onClick={() => {
+            navigate("/home");
+          }}
+        >
+          MyTrends
+        </h1>
         {token ? (
           <div className='flex gap-6'>
-            <a href='' className='font-semibold'>
+            <a href='/home' className='font-semibold'>
               Home
             </a>
             <a href='/products' className='font-semibold'>

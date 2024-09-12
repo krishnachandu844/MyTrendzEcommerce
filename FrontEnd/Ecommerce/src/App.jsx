@@ -11,6 +11,7 @@ import CartPage from "./components/CartPage";
 import Billing from "./components/Billing";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Favorite from "./components/Favorite";
+import Home from "./components/Home";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path='/' element={<Signup />} />
         <Route path='/login' element={<Login />} />
         <Route element={<ProtectedRoute />}>
+          <Route path='/home' element={<Home />} />
           <Route path='/products' element={<Products />} />
           <Route path='/product/:productId' element={<Product />} />
           <Route path='/favorite' element={<Favorite />} />

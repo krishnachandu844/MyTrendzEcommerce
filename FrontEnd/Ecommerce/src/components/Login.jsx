@@ -22,7 +22,7 @@ export default function Login() {
     if (response.ok === true) {
       const data = await response.json();
       Cookies.set("token", data.token, { expires: 1 });
-      navigate("/products");
+      navigate("/home");
     } else {
       console.log("Error");
     }
