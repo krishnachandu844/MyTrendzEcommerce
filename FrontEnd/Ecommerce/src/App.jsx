@@ -10,6 +10,7 @@ import NotFoundPage from "./components/NotFoundPage";
 import CartPage from "./components/CartPage";
 import Billing from "./components/Billing";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Favorite from "./components/Favorite";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path='/products' element={<Products />} />
           <Route path='/product/:productId' element={<Product />} />
+          <Route path='/favorite' element={<Favorite />} />
           <Route path='/cart' element={<CartPage />} />
           <Route path='/Billing/:totalPrice' element={<Billing />} />
           <Route path='*' element={<NotFoundPage />} />

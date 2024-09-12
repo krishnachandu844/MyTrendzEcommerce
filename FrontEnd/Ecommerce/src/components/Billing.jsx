@@ -82,7 +82,7 @@ export default function Billing() {
 
   //cart items
   const init = async () => {
-    let response = await fetch("http://localhost:3000/cartItems", {
+    let response = await fetch("http://localhost:3000/cart/cartItems", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

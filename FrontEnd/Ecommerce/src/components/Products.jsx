@@ -16,7 +16,7 @@ export default function Products() {
   // onClick to add Cart
   const onClickToAddCart = async (id, title, price, image) => {
     const cartData = { id, title, price, image };
-    const res = await fetch("http://localhost:3000/cart", {
+    const res = await fetch("http://localhost:3000/cart/addCart", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -27,12 +27,11 @@ export default function Products() {
     if (res.ok === true) {
       const data = await res.json();
     } else {
-      console.log(res);
+      console.log("Error");
     }
-    // const data = await res.json();
-    // navigate(`/cart/${id}`);
   };
 
+  //Getting Products
   const init = async () => {
     let response = await fetch("https://fakestoreapi.com/products", {
       method: "GET",

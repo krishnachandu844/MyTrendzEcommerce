@@ -50,7 +50,7 @@ export default function CartPage() {
 
   //Getting cart items
   const init = async () => {
-    let response = await fetch("http://localhost:3000/cartItems", {
+    let response = await fetch("http://localhost:3000/cart/cartItems", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -181,13 +181,15 @@ export default function CartPage() {
         <div className='total-bill-count bg-white h-44 w-96 shadow-lg rounded-lg p-4 sticky bottom-0 right-0 ml-auto m-10'>
           <div className='flex justify-between'>
             <h1 className='text-2xl font-bold'>Total</h1>
-            <h1 className='text-xl product-heading font-bold'>${totalPrice}</h1>
+            <h1 className='text-xl product-heading font-bold'>
+              ${parseFloat(totalPrice.toFixed(2))}
+            </h1>
           </div>
           <div className='w-full mt-11'>
             <button
               className='sign-up-button w-full h-10 rounded-md'
               onClick={() => {
-                navigate(`/Billing/${totalPrice}`);
+                navigate(`/Billing/${parseFloat(totalPrice.toFixed(2))}`);
               }}
             >
               Proceed to CheckOut

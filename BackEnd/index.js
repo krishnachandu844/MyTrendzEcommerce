@@ -6,6 +6,7 @@ import cors from "cors";
 
 import authRoutes from "./routes/userRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
+import favoriteRoute from "./routes/favoriteRoute.js";
 import connectToMongoDb from "./db/connectMongodb.js";
 
 const app = express();
@@ -17,6 +18,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/auth", authRoutes);
 app.use("/cart", cartRoutes);
+app.use("/favorite", favoriteRoute);
 
 //RazorPay
 //order razorpay

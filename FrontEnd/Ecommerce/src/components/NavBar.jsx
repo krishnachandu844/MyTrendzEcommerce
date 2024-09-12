@@ -9,7 +9,7 @@ export default function NavBar() {
   const token = Cookies.get("token");
 
   const init = async () => {
-    let response = await fetch("http://localhost:3000/cartItems", {
+    let response = await fetch("http://localhost:3000/cart/cartItems", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -24,7 +24,7 @@ export default function NavBar() {
     if (token) {
       init();
     }
-  }, [cartProducts]);
+  }, []);
 
   return (
     <div className='sticky top-0 z-10 bg-white'>
@@ -38,8 +38,8 @@ export default function NavBar() {
             <a href='/products' className='font-semibold'>
               Products
             </a>
-            <a href='' className='font-semibold'>
-              About
+            <a href='/favorite' className='font-semibold'>
+              Favorites
             </a>
             <a href='/cart' className='font-semibold'>
               Cart
