@@ -9,8 +9,8 @@ export const cartItems = async (req, res) => {
   }
 };
 export const addCart = async (req, res) => {
-  const { id, title, price, image, quantity } = req.body;
-  const newCartItem = new CART({ id, title, price, image, quantity });
+  const { productId, title, price, image, quantity } = req.body;
+  const newCartItem = new CART({ productId, title, price, image, quantity });
   await newCartItem.save();
   res.json({ message: "Cart Added Successfully", cartId: newCartItem._id });
 };

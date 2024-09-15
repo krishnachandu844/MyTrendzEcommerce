@@ -6,6 +6,7 @@ export const signup = async (req, res) => {
   const { username, email, password } = req.body;
 
   const isUserExists = await USER.findOne({ username });
+
   if (!isUserExists) {
     const hashedPassword = bcrypt.hashSync(password, 10);
     const newUser = new USER({ username, email, password: hashedPassword });
@@ -40,6 +41,6 @@ export const login = async (req, res) => {
       res.status(404).json({ message: "Password is incorrect" });
     }
   } else {
-    res.status(404).json({ message: "User Doesn't exists" });
+    res.status(404).json({ message: "User doesn't exists" });
   }
 };
