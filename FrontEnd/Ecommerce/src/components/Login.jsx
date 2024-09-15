@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -23,8 +24,14 @@ export default function Login() {
       const data = await response.json();
       Cookies.set("token", data.token, { expires: 1 });
       navigate("/home");
+      toast.info("Logged in successfully", {
+        position: "bottom-right",
+      });
     } else {
-      console.log("Error");
+      const data = await response.json();
+      toast.error(`${data.message}`, {
+        position: "bottom-right",
+      });
     }
   };
 
@@ -55,10 +62,10 @@ export default function Login() {
               id='email'
               className='mt-3 w-full focus:outline-none h-10 input-color rounded-md'
               placeholder='John Doe'
+              value={username}
               onChange={(e) => {
                 setUserName(e.target.value);
               }}
-              value={username}
               onBlur={(e) => handleBlur("username", e.target.value)}
             />
             {usernameError && (
@@ -97,7 +104,10 @@ export default function Login() {
             </button>
           </div>
           <p className='mt-4 text-center'>
-            Don't have an account ? <a href='/'>signup</a>
+            Don't have an account ?{" "}
+            <a href='/' className='hover:font-bold'>
+              signup
+            </a>
           </p>
         </div>
       </div>

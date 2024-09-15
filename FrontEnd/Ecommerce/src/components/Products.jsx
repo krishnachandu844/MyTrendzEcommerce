@@ -1,33 +1,90 @@
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
 export default function Products() {
   const token = Cookies.get("token");
+  const [cartProducts, setCartProduct] = useState(undefined);
   const [products, setProducts] = useState();
   const navigate = useNavigate();
-  //onClicking We go to single product
 
+  //onClicking We go to single product
   const goToProduct = (id) => {
     navigate(`/product/${id}`);
   };
 
-  // onClick to add Cart
-  const onClickToAddCart = async (id, title, price, image) => {
-    const cartData = { id, title, price, image };
-    const res = await fetch("http://localhost:3000/cart/addCart", {
-      method: "POST",
+  //Getting cart Items
+  const cartItems = async () => {
+    let response = await fetch("http://localhost:3000/cart/cartItems", {
+      method: "GET",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(cartData),
     });
-    if (res.ok === true) {
-      const data = await res.json();
+    const data = await response.json();
+    setCartProduct(data.cart);
+  };
+
+  useEffect(() => {
+    cartItems();
+  }, [cartProducts]);
+
+  // onClick to add Cart and update quantity if the cart item is already present
+  const onClickToAddCart = async (productId, title, price, image) => {
+    const cartData = { productId, title, price, image };
+
+    const isCartPresent = cartProducts.find(
+      (cart) => cart.productId === productId
+    );
+    console.log(isCartPresent);
+
+    if (isCartPresent) {
+      const updatedProductsQuantity = cartProducts.map((cart) =>
+        cart.productId === productId
+          ? { ...cart, quantity: cart.quantity + 1 }
+          : cart
+      );
+      setCartProduct(updatedProductsQuantity);
+
+      const updatedCart = updatedProductsQuantity.find(
+        (cart) => cart.productId === productId
+      );
+      let res = await fetch(
+        "http://localhost:3000/cart/updateQuantity/" + updatedCart._id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ quantity: updatedCart.quantity }),
+        }
+      );
+      toast.info("Updated Quantity", {
+        position: "bottom-right",
+      });
+      if (!res.ok) {
+        console.log("Error updating quantity");
+      }
     } else {
-      console.log("Error");
+      const res = await fetch("http://localhost:3000/cart/addCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(cartData),
+      });
+      if (res.ok === true) {
+        toast.info("Added to cart", {
+          position: "bottom-right",
+        });
+      } else {
+        console.log("Error");
+      }
     }
   };
 

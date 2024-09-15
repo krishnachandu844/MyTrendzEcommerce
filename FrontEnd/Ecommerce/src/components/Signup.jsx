@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import "../App.css";
 
 export default function Signup() {
@@ -26,9 +27,15 @@ export default function Signup() {
     if (response.ok === true) {
       const data = await response.json();
       Cookies.set("token", data.token, { expires: 1 });
+      toast.info("User created successfully", {
+        position: "bottom-right",
+      });
       navigate("/home");
     } else {
-      console.log("Error");
+      const data = await response.json();
+      toast.error(`${data.message}`, {
+        position: "bottom-right",
+      });
     }
   };
 
@@ -122,7 +129,10 @@ export default function Signup() {
             </button>
           </div>
           <p className='mt-4 text-center'>
-            Already have an account ? <a href='/login'>Login</a>
+            Already have an account ?{" "}
+            <a href='/login' className='hover:font-bold'>
+              Login
+            </a>
           </p>
         </div>
       </div>
