@@ -29,7 +29,6 @@ export const login = async (req, res) => {
   if (user) {
     const isPasswordCorrect = bcrypt.compareSync(password, user.password);
     if (isPasswordCorrect) {
-      console.log(process.env.JWT_SECRET);
       const token = jwt.sign({ username }, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
