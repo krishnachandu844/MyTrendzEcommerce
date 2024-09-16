@@ -1,6 +1,15 @@
 import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 export default function Billing() {
   const { totalPrice } = useParams();
@@ -109,23 +118,26 @@ export default function Billing() {
             {/* order section */}
             <div className='order-summary-container mt-8 mb-8 rounded-lg p-4 w-1/2'>
               <h2 className='text-3xl font-extrabold'>Order Summary</h2>
-              {cartProducts &&
-                cartProducts.map((product) => (
-                  <div key={product.id}>
-                    <div className='flex justify-between w-4/5 m-4'>
-                      <div className='w-4/5'>
-                        <h3 className='font-bold'>{product.title}</h3>
+
+              <div className='max-h-80 overflow-y-scroll'>
+                {cartProducts &&
+                  cartProducts.map((product) => (
+                    <div key={product.productId}>
+                      <div className='flex justify-between w-4/5 m-4'>
+                        <div className='w-4/5'>
+                          <h3 className='font-bold'>{product.title}</h3>
+                        </div>
+                        <div className=''>
+                          <h3 className='font-bold'>
+                            ${parseFloat(product.price)}
+                          </h3>
+                          <p>Quantity: {product.quantity}</p>
+                        </div>
                       </div>
-                      <div className=''>
-                        <h3 className='font-bold'>
-                          ${parseFloat(product.price)}
-                        </h3>
-                        <p>Quantity: {product.quantity}</p>
-                      </div>
+                      <hr />
                     </div>
-                    <hr />
-                  </div>
-                ))}
+                  ))}
+              </div>
               <div className='flex justify-between w-4/5 m-4 '>
                 <h2>SubTotal</h2>
                 <h2>${totalPrice}</h2>
@@ -149,47 +161,70 @@ export default function Billing() {
             {/* billing address */}
             <div className='order-summary-container mt-8 mb-8 rounded-lg p-4 w-1/2 ml-5'>
               <h2 className='text-3xl font-extrabold'>Billing Information</h2>
-              <br />
-              <div className='grid gap-2'>
-                <label htmlFor='name' className='font-bold'>
-                  Name
-                </label>
-                <input
-                  type='text'
-                  name=''
-                  id='name'
-                  placeholder='Enter Your Name'
-                  className='rounded-lg text-xl p-2 input-color'
-                />
+              <div className='py-14'>
+                <div className='grid gap-2'>
+                  <label htmlFor='name' className='font-bold'>
+                    Name
+                  </label>
+                  <input
+                    type='text'
+                    name=''
+                    id='name'
+                    placeholder='Enter Your Name'
+                    className='rounded-lg text-xl p-2 input-color'
+                  />
+                </div>
+                <br />
+                <div className='grid gap-2'>
+                  <label htmlFor='address' className='font-bold'>
+                    Address
+                  </label>
+                  <textarea
+                    name=''
+                    id='address'
+                    placeholder='Enter Your Address'
+                    className='rounded-lg p-2 input-color'
+                    cols={40}
+                    rows={5}
+                  ></textarea>
+                </div>
+                <div className='grid gap-2 mt-10'>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                        variant='default'
+                        size='lg'
+                        className='w-full bg-red-500 hover:bg-red-600 text-white'
+                      >
+                        Place Order
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className='sm:max-w-[425px]'>
+                      <DialogHeader>
+                        <DialogTitle className='text-xl'>
+                          Proceed to Payment
+                        </DialogTitle>
+                        <DialogDescription className='text-black'>
+                          <span className='block py-6 text-center text-2xl font-bold'>
+                            Total: ${parseFloat(totalPrice)}
+                          </span>
+
+                          <Button
+                            className='w-full'
+                            onClick={() => {
+                              createRazorpay(
+                                parseFloat(totalPrice) + 25.0 + 17.0
+                              );
+                            }}
+                          >
+                            Pay Now
+                          </Button>
+                        </DialogDescription>
+                      </DialogHeader>
+                    </DialogContent>
+                  </Dialog>
+                </div>
               </div>
-              <br />
-              <div className='grid gap-2'>
-                <label htmlFor='address' className='font-bold'>
-                  Address
-                </label>
-                <textarea
-                  name=''
-                  id='address'
-                  placeholder='Enter Your Address'
-                  className='rounded-lg p-2 input-color'
-                  cols={40}
-                  rows={4}
-                ></textarea>
-              </div>
-              <div className='grid gap-2 mt-2'>
-                <h2 className='text-xl font-bold'>Payment Method</h2>
-                <button
-                  className='w-full h-12 rounded-lg text-white bg-black font-bold'
-                  onClick={() => {
-                    createRazorpay(parseFloat(totalPrice) + 25.0 + 17.0);
-                  }}
-                >
-                  RazorPay
-                </button>
-              </div>
-              <button className='btn-color w-full mt-6 h-12 rounded-lg text-white'>
-                Place Order
-              </button>
             </div>
           </div>
         </div>
