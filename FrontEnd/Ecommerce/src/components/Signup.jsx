@@ -7,16 +7,20 @@ import "../App.css";
 export default function Signup() {
   const navigate = useNavigate();
 
-  const [username, setUserName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUserName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [usernameError, setUsernameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
   const onClickSignUp = async () => {
-    console.log(password);
+    if (username === "" && password === "" && email === "") {
+      return toast.error("Type Something in fields", {
+        position: "bottom-right",
+      });
+    }
     let response = await fetch("http://localhost:3000/auth/signup", {
       method: "POST",
       headers: {
@@ -33,9 +37,15 @@ export default function Signup() {
       navigate("/home");
     } else {
       const data = await response.json();
-      toast.error(`${data.message}`, {
-        position: "bottom-right",
-      });
+      if (data.errors) {
+        data.errors.map((error) =>
+          toast.error(`${error.message}`, {
+            position: "bottom-right",
+          })
+        );
+      } else {
+        toast.error(`${data.message}`, { position: "bottom-right" });
+      }
     }
   };
 
@@ -66,10 +76,10 @@ export default function Signup() {
               id='name'
               className='mt-3 w-full focus:outline-none h-10 input-color rounded-md'
               placeholder='John Doe'
+              value={username}
               onChange={(e) => {
                 setUserName(e.target.value);
               }}
-              value={username}
               onBlur={(e) => handleBlur("username", e.target.value)}
             />
             {usernameError && (
@@ -87,10 +97,10 @@ export default function Signup() {
               id='email'
               className='mt-3 w-full focus:outline-none h-10 input-color rounded-md'
               placeholder='m@Example.com'
+              value={email}
               onChange={(e) => {
                 setEmail(e.target.value);
               }}
-              value={email}
               onBlur={(e) => handleBlur("email", e.target.value)}
             />
             {emailError && (
@@ -110,10 +120,10 @@ export default function Signup() {
               name=''
               id='password'
               className='mt-3 w-full  h-10 input-color rounded-md'
+              value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              value={password}
               onBlur={(e) => handleBlur("password", e.target.value)}
             />
             {passwordError && (

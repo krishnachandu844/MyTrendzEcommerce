@@ -6,13 +6,19 @@ import { toast } from "react-toastify";
 export default function Login() {
   const navigate = useNavigate();
 
-  const [username, setUserName] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUserName] = useState("");
+  const [password, setPassword] = useState("");
 
   const [usernameError, setUsernameError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
   const onClickLogin = async () => {
+    if (username === "" || password === "") {
+      console.log(password);
+      return toast.error("Type Something in fields", {
+        position: "bottom-right",
+      });
+    }
     let response = await fetch("http://localhost:3000/auth/login", {
       method: "POST",
       headers: {
@@ -29,9 +35,15 @@ export default function Login() {
       });
     } else {
       const data = await response.json();
-      toast.error(`${data.message}`, {
-        position: "bottom-right",
-      });
+      if (data.errors) {
+        data.errors.map((error) =>
+          toast.error(`${error.message}`, {
+            position: "bottom-right",
+          })
+        );
+      } else {
+        toast.error(`${data.message}`, { position: "bottom-right" });
+      }
     }
   };
 
@@ -85,10 +97,10 @@ export default function Login() {
               name=''
               id='password'
               className='mt-3 w-full  h-10 input-color rounded-md'
+              value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
               }}
-              value={password}
               onBlur={(e) => handleBlur("password", e.target.value)}
             />
             {passwordError && (

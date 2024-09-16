@@ -2,6 +2,7 @@ import Cookies from "js-cookie";
 import { useEffect, useState } from "react";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 
 export default function Favorite() {
   const [favoriteItems, setFavoriteItems] = useState();
@@ -128,7 +129,7 @@ export default function Favorite() {
     init();
   }, []);
 
-  return (
+  return favoriteItems && favoriteItems.length !== 0 ? (
     <div className='bg-container min-h-screen'>
       <div className='products-container mx-auto'>
         <h2 className='text-4xl font-bold pt-4 pb-4'>Favorites</h2>
@@ -182,6 +183,27 @@ export default function Favorite() {
                 </div>
               </div>
             ))}
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className='flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8'>
+      <div className='mx-auto max-w-md text-center'>
+        <div className='mx-auto h-12 w-12' />
+        <h1 className='mt-4 text-3xl font-bold tracking-tight sm:text-4xl'>
+          Your Favorites are empty
+        </h1>
+        <p className='mt-4'>
+          Looks like you haven't added anything to your cart yet. Let's change
+          that!
+        </p>
+        <div className='mt-6'>
+          <Link
+            to='/products'
+            className='inline-flex items-center rounded-md  px-4 py-2 text-sm font-medium  shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 bg-black text-white'
+          >
+            Continue Shopping
+          </Link>
         </div>
       </div>
     </div>
