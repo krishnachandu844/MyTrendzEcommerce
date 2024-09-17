@@ -3,9 +3,12 @@ import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
+import { useContext } from "react";
+import { CartContext } from "./CartContext";
 
 export default function CartPage() {
-  const [cartProducts, setCartProduct] = useState(undefined);
+  const { cartProducts } = useContext(CartContext);
+
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
   const token = Cookies.get("token");
@@ -48,19 +51,6 @@ export default function CartPage() {
     }
   };
 
-  //Getting cart items
-  const init = async () => {
-    let response = await fetch("http://localhost:3000/cart/cartItems", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    setCartProduct(data.cart);
-  };
-
   //Deleting cart
   const deleteCart = async (cartId, dbCartId) => {
     let res = await fetch("http://localhost:3000/cart/" + dbCartId, {
@@ -77,10 +67,6 @@ export default function CartPage() {
       setCartProduct(updatedCartItems);
     }
   };
-
-  useEffect(() => {
-    init();
-  }, []);
 
   //getting total price
   useEffect(() => {

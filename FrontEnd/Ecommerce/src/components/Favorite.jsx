@@ -3,28 +3,13 @@ import { useEffect, useState } from "react";
 import { ShoppingCart, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { CartContext } from "./CartContext";
 
 export default function Favorite() {
+  const { cartProducts } = useContext(CartContext);
   const [favoriteItems, setFavoriteItems] = useState();
-  const [cartProducts, setCartProduct] = useState(undefined);
   const token = Cookies.get("token");
-
-  // Getting cart Items
-  const cartItems = async () => {
-    let response = await fetch("http://localhost:3000/cart/cartItems", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    setCartProduct(data.cart);
-  };
-
-  useEffect(() => {
-    cartItems();
-  }, []);
 
   // onClick to add Cart and update quantity if the cart item is already present
   const onClickToAddCart = async (productId, title, price, image) => {

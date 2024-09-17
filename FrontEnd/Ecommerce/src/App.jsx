@@ -15,26 +15,30 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Favorite from "./components/Favorite";
 import Home from "./components/Home";
 
+import CartProvider from "./components/CartContext.jsx";
+
 function App() {
   return (
-    <BrowserRouter>
-      <NavBar />
-      <ScrollToTop />
-      <Routes>
-        <Route path='/' element={<Signup />} />
-        <Route path='/login' element={<Login />} />
-        <Route element={<ProtectedRoute />}>
-          <Route path='/home' element={<Home />} />
-          <Route path='/products' element={<Products />} />
-          <Route path='/product/:productId' element={<Product />} />
-          <Route path='/favorite' element={<Favorite />} />
-          <Route path='/cart' element={<CartPage />} />
-          <Route path='/Billing/:totalPrice' element={<Billing />} />
-          <Route path='*' element={<NotFoundPage />} />
-        </Route>
-      </Routes>
-      <ToastContainer />
-    </BrowserRouter>
+    <CartProvider>
+      <BrowserRouter>
+        <NavBar />
+        <ScrollToTop />
+        <Routes>
+          <Route path='/' element={<Signup />} />
+          <Route path='/login' element={<Login />} />
+          <Route element={<ProtectedRoute />}>
+            <Route path='/home' element={<Home />} />
+            <Route path='/products' element={<Products />} />
+            <Route path='/product/:productId' element={<Product />} />
+            <Route path='/favorite' element={<Favorite />} />
+            <Route path='/cart' element={<CartPage />} />
+            <Route path='/Billing/:totalPrice' element={<Billing />} />
+            <Route path='*' element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+        <ToastContainer />
+      </BrowserRouter>
+    </CartProvider>
   );
 }
 

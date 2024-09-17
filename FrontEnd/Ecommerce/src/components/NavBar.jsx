@@ -2,33 +2,15 @@ import Cookies from "js-cookie";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-// import { useEffect, useState } from "react";
-import { cartContext } from "./cartContext";
+import { Badge } from "@/components/ui/badge";
+
+import { CartContext } from "./CartContext";
 
 export default function NavBar() {
-  // const [cartProducts, setCartProduct] = useState();
   const navigate = useNavigate();
   const token = Cookies.get("token");
 
-  const { cartProducts, loading, error } = useContext(cartContext);
-
-  // const init = async () => {
-  //   let response = await fetch("http://localhost:3000/cart/cartItems", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
-  //   const data = await response.json();
-  //   setCartProduct(data.cart);
-  // };
-
-  // useEffect(() => {
-  //   if (token) {
-  //     init();
-  //   }
-  // }, []);
+  const { cartProducts } = useContext(CartContext);
 
   return (
     <div className='sticky top-0 z-10 bg-white'>
@@ -53,7 +35,14 @@ export default function NavBar() {
               Favorites
             </a>
             <a href='/cart' className='font-semibold'>
-              Cart ({cartProducts.length}) {/* Display cart count */}
+              Cart{" "}
+              {cartProducts.length === 0 ? (
+                ""
+              ) : (
+                <Badge variant='outline' className='bg-black text-white'>
+                  {cartProducts.length}
+                </Badge>
+              )}
             </a>
             <button
               className='sign-up-button w-24 h-7  rounded-md'

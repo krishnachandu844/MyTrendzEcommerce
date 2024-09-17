@@ -1,17 +1,14 @@
 import { createContext, useEffect, useState } from "react";
-import NavBar from "./NavBar";
 import Cookies from "js-cookie";
 
 // Create Context
-export const cartContext = createContext();
+export const CartContext = createContext();
 
 // Token
 const token = Cookies.get("token");
 
-export const Cart = () => {
+const CartProvider = ({ children }) => {
   const [cartProducts, setCartProducts] = useState([]);
-  const [loading, setLoading] = useState(true); // To handle loading state
-  const [error, setError] = useState(null); // To handle any fetch errors
 
   // Fetch cart items from server
   const init = async () => {
@@ -32,22 +29,20 @@ export const Cart = () => {
       setCartProducts(data.cart || []); // Handle empty cart scenario
     } catch (err) {
       setError(err.message);
-    } finally {
-      setLoading(false);
     }
   };
 
   useEffect(() => {
     if (token) {
       init();
-    } else {
-      setLoading(false); // Stop loading if no token is found
     }
-  }, []);
+  }, [token]);
 
   return (
-    <cartContext.Provider value={{ cartProducts, loading, error }}>
-      <NavBar />
-    </cartContext.Provider>
+    <CartContext.Provider value={{ cartProducts }}>
+      {children}
+    </CartContext.Provider>
   );
 };
+
+export default CartProvider;

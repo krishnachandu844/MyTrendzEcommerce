@@ -3,9 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { TailSpin } from "react-loader-spinner";
 import { toast } from "react-toastify";
+import { useContext } from "react";
+import { CartContext } from "./CartContext";
 export default function Product() {
+  const { cartProducts } = useContext(CartContext);
   const { productId } = useParams();
-  const [cartProducts, setCartProduct] = useState(undefined);
+
   const [favoriteItems, setFavoriteItems] = useState();
   const navigate = useNavigate();
   const [product, setProduct] = useState();
@@ -35,23 +38,6 @@ export default function Product() {
   useEffect(() => {
     favorite();
   }, []);
-
-  //Getting cart Items
-  const cartItems = async () => {
-    let response = await fetch("http://localhost:3000/cart/cartItems", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    setCartProduct(data.cart);
-  };
-
-  useEffect(() => {
-    cartItems();
-  }, [cartProducts]);
 
   //adding items to favorite section
   const addFavoriteItems = async (productId, title, image, price) => {

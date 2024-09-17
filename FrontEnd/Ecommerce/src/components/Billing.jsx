@@ -10,10 +10,13 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useContext } from "react";
+import { CartContext } from "./CartContext";
 
 export default function Billing() {
+  const { cartProducts } = useContext(CartContext);
   const { totalPrice } = useParams();
-  const [cartProducts, setCartProduct] = useState();
+
   const [responseId, setResponseId] = useState("");
   const token = Cookies.get("token");
 
@@ -88,23 +91,6 @@ export default function Billing() {
     const paymentObject = new window.Razorpay(options);
     paymentObject.open();
   };
-
-  //cart items
-  const init = async () => {
-    let response = await fetch("http://localhost:3000/cart/cartItems", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const data = await response.json();
-    setCartProduct(data.cart);
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
 
   return (
     <div className='flex justify-center billing-container min-h-screen'>

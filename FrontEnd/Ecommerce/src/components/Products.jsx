@@ -30,7 +30,7 @@ export default function Products() {
 
   useEffect(() => {
     cartItems();
-  }, [cartProducts]);
+  }, []);
 
   // onClick to add Cart and update quantity if the cart item is already present
   const onClickToAddCart = async (productId, title, price, image) => {
