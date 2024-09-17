@@ -2,6 +2,7 @@ import { useState } from "react";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import "../App.css";
 
 export default function Signup() {
@@ -14,6 +15,12 @@ export default function Signup() {
   const [usernameError, setUsernameError] = useState(false);
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const [passwordVisible, setPasswordVisible] = useState(false);
+
+  //password visibility
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
 
   const onClickSignUp = async () => {
     if (username === "" && password === "" && email === "") {
@@ -108,15 +115,15 @@ export default function Signup() {
             )}
           </div>
           <br />
-          <div className='space-y-2'>
+          <div className='space-y-2 relative'>
             <label
               htmlFor='password'
-              className='heading-text-color font-medium'
+              className='heading-text-color font-medium '
             >
               Password
             </label>
             <input
-              type='password'
+              type={passwordVisible ? "text" : "password"}
               name=''
               id='password'
               className='mt-3 w-full  h-10 input-color rounded-md'
@@ -126,6 +133,16 @@ export default function Signup() {
               }}
               onBlur={(e) => handleBlur("password", e.target.value)}
             />
+            <button
+              className='absolute inset-y-0 pt-5 right-0 flex items-center px-3 text-gray-500 text-xl'
+              onClick={togglePasswordVisibility}
+            >
+              {passwordVisible ? (
+                <MdOutlineVisibility />
+              ) : (
+                <MdOutlineVisibilityOff />
+              )}
+            </button>
             {passwordError && (
               <p className='text-red-500 font-bold text-sm'>*Required</p>
             )}

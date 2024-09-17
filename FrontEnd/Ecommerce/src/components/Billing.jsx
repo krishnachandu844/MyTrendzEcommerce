@@ -10,15 +10,32 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useContext } from "react";
-import { CartContext } from "./CartContext";
 
 export default function Billing() {
-  const { cartProducts } = useContext(CartContext);
+  const [cartProducts, setCartProducts] = useState();
   const { totalPrice } = useParams();
 
   const [responseId, setResponseId] = useState("");
   const token = Cookies.get("token");
+
+  //getting cart items
+  const init = async () => {
+    let res = await fetch("http://localhost:3000/cart/cartItems", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.ok === true) {
+      const data = await res.json();
+      setCartProducts(data.cart);
+    }
+  };
+
+  useEffect(() => {
+    init();
+  });
 
   //loadScript
   const loadScript = (src) => {

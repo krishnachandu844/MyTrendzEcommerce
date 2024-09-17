@@ -3,15 +3,31 @@ import { Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
-import { useContext } from "react";
-import { CartContext } from "./CartContext";
 
 export default function CartPage() {
-  const { cartProducts } = useContext(CartContext);
-
+  const [cartProducts, setCartProducts] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
   const token = Cookies.get("token");
+
+  //getting cart items
+  const init = async () => {
+    let res = await fetch("http://localhost:3000/cart/cartItems", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (res.ok === true) {
+      const data = await res.json();
+      setCartProducts(data.cart);
+    }
+  };
+
+  useEffect(() => {
+    init();
+  });
 
   //increment and decrement quantity
   const onIncrement = async (id) => {
