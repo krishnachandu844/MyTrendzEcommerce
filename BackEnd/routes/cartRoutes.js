@@ -9,7 +9,7 @@ import authenticateJwt from "../middleware/authorization.js";
 
 const router = express.Router();
 
-router.post("/addCart", addCart);
+router.post("/addCart", authenticateJwt, addCart);
 
 router.get("/cartItems", authenticateJwt, cartItems);
 

@@ -1,7 +1,8 @@
 import { CART } from "../models/cartmodel.js";
 
 export const cartItems = async (req, res) => {
-  const cart = await CART.find({});
+  const { userId } = req.user;
+  const cart = await CART.find({ userId });
   if (cart) {
     res.json({ cart });
   } else {
@@ -9,10 +10,22 @@ export const cartItems = async (req, res) => {
   }
 };
 export const addCart = async (req, res) => {
+  const { userId } = req.user;
   const { productId, title, price, image, quantity } = req.body;
-  const newCartItem = new CART({ productId, title, price, image, quantity });
+  console.log(userId);
+  const newCartItem = new CART({
+    userId,
+    productId,
+    title,
+    price,
+    image,
+    quantity,
+  });
   await newCartItem.save();
-  res.json({ message: "Cart Added Successfully", cartId: newCartItem._id });
+  res.json({
+    message: "Cart Added Successfully",
+    userId: userId,
+  });
 };
 
 export const updateQuantity = async (req, res) => {

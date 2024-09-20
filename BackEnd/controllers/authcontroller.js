@@ -22,7 +22,6 @@ export const signup = async (req, res) => {
       path: issue.path[0], // the field where the issue occurred
       message: issue.message, // the error message for that field
     }));
-    console.log("Error");
     return res.status(404).json({ errors });
   }
   const { username, email, password } = req.body;
@@ -33,12 +32,10 @@ export const signup = async (req, res) => {
     const hashedPassword = bcrypt.hashSync(password, 10);
     const newUser = new USER({ username, email, password: hashedPassword });
     await newUser.save();
-    const token = jwt.sign({ username }, process.env.JWT_SECRET, {
-      expiresIn: "1h",
-    });
+
     res.json({
       message: "User Created Successfully",
-      token,
+      userId: newUser._id,
     });
   } else {
     res.status(404).json({ message: "User Already exists" });
@@ -59,7 +56,6 @@ export const login = async (req, res) => {
   const parsedUser = loginUser.safeParse(req.body);
 
   if (!parsedUser.success) {
-    console.log(parsedUser.error);
     const errors = parsedUser.error.issues.map((issue) => ({
       path: issue.path[0], // the field where the issue occurred
       message: issue.message, // the error message for that field
@@ -68,20 +64,27 @@ export const login = async (req, res) => {
   }
   const { username, password } = req.body;
   const user = await USER.findOne({ username });
-  if (user) {
-    const isPasswordCorrect = bcrypt.compareSync(password, user.password);
-    if (isPasswordCorrect) {
-      const token = jwt.sign({ username }, process.env.JWT_SECRET, {
+  if (!user) {
+    return res.status(401).json({ message: "User doesn't exist" }); // Use 401 for unauthorized
+  }
+
+  const isPasswordCorrect = bcrypt.compareSync(password, user.password);
+
+  if (isPasswordCorrect) {
+    const token = jwt.sign(
+      {
+        userId: user._id,
+      },
+      process.env.JWT_SECRET,
+      {
         expiresIn: "1h",
-      });
-      res.json({
-        message: "Login Successfully",
-        token,
-      });
-    } else {
-      res.status(404).json({ message: "Password is incorrect" });
-    }
+      }
+    );
+    return res.json({
+      message: "Login Successfully",
+      token,
+    });
   } else {
-    res.status(404).json({ message: "User doesn't exists" });
+    return res.status(401).json({ message: "Password is incorrect" });
   }
 };
