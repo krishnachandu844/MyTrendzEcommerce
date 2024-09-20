@@ -4,7 +4,7 @@ import { ShoppingCart, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 
-export default function Favorite() {
+export default function Favorite({ increment }) {
   const [cartProducts, setCartProducts] = useState();
   const [favoriteItems, setFavoriteItems] = useState();
   const token = Cookies.get("token");
@@ -77,6 +77,7 @@ export default function Favorite() {
         toast.info("Added to cart", {
           position: "bottom-right",
         });
+        increment();
       } else {
         console.log("Error");
       }

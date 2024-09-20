@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 
-export default function CartPage() {
+export default function CartPage({ decrement }) {
   const [cartProducts, setCartProducts] = useState();
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export default function CartPage() {
 
   useEffect(() => {
     init();
-  });
+  }, []);
 
   //increment and decrement quantity
   const onIncrement = async (id) => {
@@ -80,7 +80,8 @@ export default function CartPage() {
       let updatedCartItems = cartProducts.filter(
         (cartItem) => cartItem._id !== dbCartId
       );
-      setCartProduct(updatedCartItems);
+      decrement();
+      setCartProducts(updatedCartItems);
     }
   };
 

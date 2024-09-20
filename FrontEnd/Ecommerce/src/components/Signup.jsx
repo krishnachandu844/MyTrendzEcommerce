@@ -134,7 +134,11 @@ export default function Signup() {
               onBlur={(e) => handleBlur("password", e.target.value)}
             />
             <button
-              className='absolute inset-y-0 pt-5 right-0 flex items-center px-3 text-gray-500 text-xl'
+              className={`${
+                passwordError
+                  ? "absolute inset-y-0  right-0  flex items-center px-3  text-gray-500 text-xl"
+                  : "absolute inset-y-0 h-full right-0 pt-4 flex items-center px-3  text-gray-500 text-xl"
+              }`}
               onClick={togglePasswordVisibility}
             >
               {passwordVisible ? (

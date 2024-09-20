@@ -91,18 +91,19 @@ export default function Login() {
             )}
           </div>
           <br />
-          <div className='space-y-2 relative'>
+          <div className='space-y-2 relative '>
             <label
               htmlFor='password'
               className='heading-text-color font-medium'
             >
               Password
             </label>
+
             <input
               type={passwordVisible ? "text" : "password"}
               name=''
               id='password'
-              className='mt-3 w-full  h-10 input-color rounded-md'
+              className='mt-3 w-full  h-10 input-color rounded-md pr-10'
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -110,7 +111,11 @@ export default function Login() {
               onBlur={(e) => handleBlur("password", e.target.value)}
             />
             <button
-              className='absolute inset-y-0 pt-5 right-0 flex items-center px-3 text-gray-500 text-xl'
+              className={`${
+                passwordError
+                  ? "absolute inset-y-0  right-0  flex items-center px-3  text-gray-500 text-xl"
+                  : "absolute inset-y-0 h-full right-0 pt-4 flex items-center px-3  text-gray-500 text-xl"
+              }`}
               onClick={togglePasswordVisibility}
             >
               {passwordVisible ? (
@@ -119,9 +124,11 @@ export default function Login() {
                 <MdOutlineVisibilityOff />
               )}
             </button>
-            {passwordError && (
-              <p className='text-red-500 font-bold text-sm'>*Required</p>
-            )}
+            <div>
+              {passwordError && (
+                <p className='text-red-500 font-bold text-sm mt-2'>*Required</p>
+              )}
+            </div>
           </div>
           <div className='mt-10'>
             <button

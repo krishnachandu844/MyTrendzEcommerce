@@ -4,29 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Badge } from "@/components/ui/badge";
 
-export default function NavBar() {
+export default function NavBar({ cartCount }) {
   const navigate = useNavigate();
-  const [cartProducts, setCartProducts] = useState();
+
   const token = Cookies.get("token");
-
-  //getting cart items
-  const init = async () => {
-    let res = await fetch("http://localhost:3000/cart/cartItems", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (res.ok === true) {
-      const data = await res.json();
-      setCartProducts(data.cart);
-    }
-  };
-
-  useEffect(() => {
-    init();
-  });
 
   return (
     <div className='sticky top-0 z-10 bg-white'>
@@ -52,13 +33,13 @@ export default function NavBar() {
             </a>
             <a href='/cart' className='font-semibold'>
               Cart
-              {/* {cartProducts.length === 0 ? (
+              {cartCount === 0 ? (
                 ""
               ) : (
-                <Badge variant='outline' className='bg-black text-white'>
-                  {cartProducts.length}
+                <Badge variant='outline' className='bg-black text-white ml-1'>
+                  {cartCount}
                 </Badge>
-              )} */}
+              )}
             </a>
             <button
               className='sign-up-button w-24 h-7  rounded-md'

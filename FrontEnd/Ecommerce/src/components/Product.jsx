@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import { TailSpin } from "react-loader-spinner";
 import { toast } from "react-toastify";
 
-export default function Product() {
+export default function Product({ increment }) {
   const { productId } = useParams();
   const [cartProducts, setCartProducts] = useState();
   const [favoriteItems, setFavoriteItems] = useState();
@@ -137,6 +137,7 @@ export default function Product() {
         toast.info("Added to cart", {
           position: "bottom-right",
         });
+        increment();
       } else {
         console.log("Error");
       }

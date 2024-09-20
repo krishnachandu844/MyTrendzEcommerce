@@ -4,9 +4,10 @@ import { toast } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
-export default function Products() {
+export default function Products({ increment }) {
   const token = Cookies.get("token");
-  const [cartProducts, setCartProduct] = useState(undefined);
+
+  const [cartProducts, setCartProduct] = useState([]);
   const [products, setProducts] = useState();
   const navigate = useNavigate();
 
@@ -39,7 +40,6 @@ export default function Products() {
     const isCartPresent = cartProducts.find(
       (cart) => cart.productId === productId
     );
-    console.log(isCartPresent);
 
     if (isCartPresent) {
       const updatedProductsQuantity = cartProducts.map((cart) =>
@@ -82,6 +82,7 @@ export default function Products() {
         toast.info("Added to cart", {
           position: "bottom-right",
         });
+        increment();
       } else {
         console.log("Error");
       }
