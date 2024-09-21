@@ -17,104 +17,94 @@ export default function Products() {
     navigate(`/product/${id}`);
   };
 
-  // //Getting cart Items
-  // const cartItems = async () => {
-  //   let response = await fetch("http://localhost:3000/cart/cartItems", {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `Bearer ${token}`,
-  //     },
-  //   });
-  //   const data = await response.json();
-  //   setCartProduct(data.cart);
-  // };
-
-  // useEffect(() => {
-  //   cartItems();
-  // }, []);
-
-  // // onClick to add Cart and update quantity if the cart item is already present
-  // const onClickToAddCart = async (productId, title, price, image) => {
-  //   const cartData = { productId, title, price, image };
-
-  //   const isCartPresent = cartProducts.find(
-  //     (cart) => cart.productId === productId
-  //   );
-  //   if (isCartPresent) {
-  //     const updatedProductsQuantity = cartProducts.map((cart) =>
-  //       cart.productId === productId
-  //         ? { ...cart, quantity: cart.quantity + 1 }
-  //         : cart
-  //     );
-  //     setCartProduct(updatedProductsQuantity);
-
-  //     const updatedCart = updatedProductsQuantity.find(
-  //       (cart) => cart.productId === productId
-  //     );
-  //     console.log(updatedCart);
-  //     let res = await fetch(
-  //       "http://localhost:3000/cart/updateQuantity/" + updatedCart.cartId,
-  //       {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify({ quantity: updatedCart.quantity }),
-  //       }
-  //     );
-  //     toast.info("Updated Quantity", {
-  //       position: "bottom-right",
-  //     });
-  //     if (!res.ok) {
-  //       console.log("Error updating quantity");
-  //     }
-  //   } else {
-  //     const res = await fetch("http://localhost:3000/cart/addCart", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(cartData),
-  //     });
-  //     if (res.ok === true) {
-  //       const data = await res.json();
-  //       const { cartId } = data;
-
-  //       setCartProduct((prevProducts) => [
-  //         ...cartProducts,
-  //         { _id: cartId.cartData },
-  //       ]);
-  //       toast.info("Added to cart", {
-  //         position: "bottom-right",
-  //       });
-
-  //       console.log(cartProducts);
-  //     } else {
-  //       console.log("Error");
-  //     }
-  //   }
-  // };
-
   //Adding to Cart
   const onClickToAddCart = async (productId, title, price, image) => {
-    const cartData = { productId, title, price, image };
-    setCartItems((prevItems) => [...prevItems, cartData]);
-    const res = await fetch("http://localhost:3000/cart/addCart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(cartData),
-    });
-    if (res.ok == true) {
-      const data = await res.json();
-      toast.info("Added to cart", {
-        position: "bottom-right",
+    const cartData = { productId, title, price, image, quantity: 1 };
+    console.log(cartItems);
+    if (cartItems && cartItems.length > 0) {
+      const isCartPresent = cartItems.find(
+        (cart) => cart.productId === productId
+      );
+      console.log(isCartPresent);
+      if (isCartPresent) {
+        // Update quantity if product exists in the cart
+        const updatedProductsQuantity = cartItems.map((cart) =>
+          cart.productId === productId
+            ? { ...cart, quantity: cart.quantity + 1 }
+            : cart
+        );
+        setCartItems(updatedProductsQuantity);
+
+        const updatedCart = updatedProductsQuantity.find(
+          (cart) => cart.productId === productId
+        );
+
+        // Use `_id` to update cart item on the server
+        let res = await fetch(
+          `http://localhost:3000/cart/updateQuantity/${updatedCart._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ quantity: updatedCart.quantity }),
+          }
+        );
+
+        if (res.ok) {
+          toast.info("Updated Quantity", {
+            position: "bottom-right",
+          });
+        } else {
+          console.error("Failed to update the cart on the server");
+        }
+      } else {
+        // Add new product to cart if it doesn't exist
+        const res = await fetch("http://localhost:3000/cart/addCart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(cartData),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          // Add the returned item (with _id) to the cart
+          setCartItems((prevItems) => [
+            ...prevItems,
+            { ...data.newCartItem, quantity: 1 },
+          ]);
+
+          toast.info("Added to cart", {
+            position: "bottom-right",
+          });
+        }
+      }
+    } else {
+      // If the cart is empty, add the product
+      const res = await fetch("http://localhost:3000/cart/addCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(cartData),
       });
+
+      if (res.ok) {
+        const data = await res.json();
+
+        // Add the returned item (with _id) to the cart
+        setCartItems([{ ...data.newCartItem, quantity: 1 }]);
+
+        toast.info("Added to cart", {
+          position: "bottom-right",
+        });
+      }
     }
   };
 

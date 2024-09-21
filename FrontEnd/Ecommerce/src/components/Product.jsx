@@ -1,18 +1,16 @@
 import { useEffect, useState, useContext } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import Cookies from "js-cookie";
+import { useParams } from "react-router-dom";
+
 import { TailSpin } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import { CartContext } from "../context/cartContext";
 
 export default function Product() {
   const { productId } = useParams();
-  const { cartItems, setCartItems } = useContext(CartContext);
+  const { cartItems, setCartItems, token } = useContext(CartContext);
   const [favoriteItems, setFavoriteItems] = useState();
-  const navigate = useNavigate();
-  const [product, setProduct] = useState();
 
-  const token = Cookies.get("token");
+  const [product, setProduct] = useState();
 
   // getting favorite items
   const favorite = async () => {
@@ -41,13 +39,36 @@ export default function Product() {
   //adding items to favorite section
   const addFavoriteItems = async (productId, title, image, price) => {
     const data = { productId, title, image, price };
-    const isFavoritePresent = favoriteItems.find(
-      (item) => item.productId === productId
-    );
-    console.log(isFavoritePresent);
-    if (isFavoritePresent) {
-      toast.error("Already present in Favorites", { position: "bottom-right" });
+    if (favoriteItems && favoriteItems.length > 0) {
+      const isFavPresent = favoriteItems.find(
+        (fav) => fav.productId === productId
+      );
+      console.log(isFavPresent);
+      if (isFavPresent) {
+        toast.error("Already added to favorites", { position: "bottom-right" });
+      } else {
+        //adding if fav item is not present
+        const response = await fetch(
+          "http://localhost:3000/favorite/addFavoriteItems",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        if (response.ok === true) {
+          const data = await response.json();
+          setFavoriteItems((prevFav) => [...prevFav, ...data.newFavoriteItem]);
+          toast.info("Added to favorites", { position: "bottom-right" });
+        } else {
+          console.log("Error");
+        }
+      }
     } else {
+      //Adding if the favorite Items are Empty
       const response = await fetch(
         "http://localhost:3000/favorite/addFavoriteItems",
         {
@@ -61,7 +82,8 @@ export default function Product() {
       );
       if (response.ok === true) {
         const data = await response.json();
-        console.log(data);
+
+        setFavoriteItems([{ ...data.newFavoriteItem }]);
         toast.info("Added to favorites", { position: "bottom-right" });
       } else {
         console.log("Error");
@@ -69,80 +91,91 @@ export default function Product() {
     }
   };
 
-  // onClick to add Cart and update quantity if the cart item is already present
-  // const onClickToAddCart = async (productId, title, price, image) => {
-  //   const cartData = { productId, title, price, image };
-
-  //   const isCartPresent = cartProducts.find(
-  //     (cart) => cart.productId === productId
-  //   );
-  //   console.log(isCartPresent);
-
-  //   if (isCartPresent) {
-  //     const updatedProductsQuantity = cartProducts.map((cart) =>
-  //       cart.productId === productId
-  //         ? { ...cart, quantity: cart.quantity + 1 }
-  //         : cart
-  //     );
-  //     setCartProduct(updatedProductsQuantity);
-
-  //     const updatedCart = updatedProductsQuantity.find(
-  //       (cart) => cart.productId === productId
-  //     );
-  //     let res = await fetch(
-  //       "http://localhost:3000/cart/updateQuantity/" + updatedCart._id,
-  //       {
-  //         method: "PUT",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify({ quantity: updatedCart.quantity }),
-  //       }
-  //     );
-  //     toast.info("Updated Quantity", {
-  //       position: "bottom-right",
-  //     });
-  //     if (!res.ok) {
-  //       console.log("Error updating quantity");
-  //     }
-  //   } else {
-  //     const res = await fetch("http://localhost:3000/cart/addCart", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(cartData),
-  //     });
-  //     if (res.ok === true) {
-  //       toast.info("Added to cart", {
-  //         position: "bottom-right",
-  //       });
-  //       increment();
-  //     } else {
-  //       console.log("Error");
-  //     }
-  //   }
-  // };
-
-  //adding Cart
+  //Adding to Cart
   const onClickToAddCart = async (productId, title, price, image) => {
-    const cartData = { productId, title, price, image };
-    setCartItems((prevItems) => [...prevItems, cartData]);
-    const res = await fetch("http://localhost:3000/cart/addCart", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(cartData),
-    });
-    if (res.ok == true) {
-      const data = await res.json();
-      toast.info("Added to cart", {
-        position: "bottom-right",
+    const cartData = { productId, title, price, image, quantity: 1 };
+
+    if (cartItems && cartItems.length > 0) {
+      const isCartPresent = cartItems.find(
+        (cart) => cart.productId === productId
+      );
+      console.log(isCartPresent);
+      if (isCartPresent) {
+        // Updating quantity if product exists in the cart
+        const updatedProductsQuantity = cartItems.map((cart) =>
+          cart.productId === productId
+            ? { ...cart, quantity: cart.quantity + 1 }
+            : cart
+        );
+        setCartItems(updatedProductsQuantity);
+
+        const updatedCart = updatedProductsQuantity.find(
+          (cart) => cart.productId === productId
+        );
+
+        let res = await fetch(
+          `http://localhost:3000/cart/updateQuantity/${updatedCart._id}`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ quantity: updatedCart.quantity }),
+          }
+        );
+
+        if (res.ok) {
+          toast.info("Updated Quantity", {
+            position: "bottom-right",
+          });
+        } else {
+          console.error("Failed to update the cart on the server");
+        }
+      } else {
+        // Adding new product to cart if it doesn't exist
+        const res = await fetch("http://localhost:3000/cart/addCart", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(cartData),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+
+          setCartItems((prevItems) => [
+            ...prevItems,
+            { ...data.newCartItem, quantity: 1 },
+          ]);
+
+          toast.info("Added to cart", {
+            position: "bottom-right",
+          });
+        }
+      }
+    } else {
+      //cart is empty adding the product
+      const res = await fetch("http://localhost:3000/cart/addCart", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(cartData),
       });
+
+      if (res.ok) {
+        const data = await res.json();
+
+        setCartItems([{ ...data.newCartItem, quantity: 1 }]);
+
+        toast.info("Added to cart", {
+          position: "bottom-right",
+        });
+      }
     }
   };
 

@@ -1,4 +1,3 @@
-import Cookies from "js-cookie";
 import { Trash2 } from "lucide-react";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
@@ -6,10 +5,9 @@ import { TailSpin } from "react-loader-spinner";
 import { CartContext } from "../context/cartContext";
 
 export default function CartPage() {
-  const { cartItems, setCartItems } = useContext(CartContext);
+  const { cartItems, setCartItems, token } = useContext(CartContext);
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
-  const token = Cookies.get("token");
 
   //increment and decrement quantity
   const onIncrement = async (id) => {

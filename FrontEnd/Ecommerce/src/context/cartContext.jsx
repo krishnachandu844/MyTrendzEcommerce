@@ -34,7 +34,7 @@ export const CartProvider = ({ children }) => {
   // Add more cart-related functions if needed (add, remove, etc.)
 
   return (
-    <CartContext.Provider value={{ cartItems, setCartItems }}>
+    <CartContext.Provider value={{ cartItems, setCartItems, token }}>
       {children}
     </CartContext.Provider>
   );
