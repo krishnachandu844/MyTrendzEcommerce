@@ -23,8 +23,7 @@ export const addCart = async (req, res) => {
   });
   await newCartItem.save();
   res.json({
-    message: "Cart Added Successfully",
-    userId: userId,
+    newCartItem,
   });
 };
 

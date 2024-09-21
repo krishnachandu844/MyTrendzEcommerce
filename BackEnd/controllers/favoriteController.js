@@ -1,17 +1,24 @@
 import FAVORITE from "../models/favoriteModel.js";
 
 export const addFavoriteItems = async (req, res) => {
+  const { userId } = req.user;
   const { productId, title, image, price } = req.body;
-  const newFavoriteItem = new FAVORITE({ productId, title, image, price });
+  const newFavoriteItem = new FAVORITE({
+    userId,
+    productId,
+    title,
+    image,
+    price,
+  });
   await newFavoriteItem.save();
   res.json({
-    message: "Favorite Item Added Successfully",
-    favoriteId: newFavoriteItem._id,
+    newFavoriteItem,
   });
 };
 
 export const getFavoriteItems = async (req, res) => {
-  const favoriteItems = await FAVORITE.find({});
+  const { userId } = req.user;
+  const favoriteItems = await FAVORITE.find({ userId });
   res.json(favoriteItems);
 };
 
