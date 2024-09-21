@@ -1,40 +1,22 @@
 import Cookies from "js-cookie";
 import { Trash2 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
+import { CartContext } from "../context/cartContext";
 
-export default function CartPage({ decrement }) {
-  const [cartProducts, setCartProducts] = useState();
+export default function CartPage() {
+  const { cartItems, setCartItems } = useContext(CartContext);
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
   const token = Cookies.get("token");
 
-  //getting cart items
-  const init = async () => {
-    let res = await fetch("http://localhost:3000/cart/cartItems", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (res.ok === true) {
-      const data = await res.json();
-      setCartProducts(data.cart);
-    }
-  };
-
-  useEffect(() => {
-    init();
-  }, []);
-
   //increment and decrement quantity
   const onIncrement = async (id) => {
-    const updatedProductsQuantity = cartProducts.map((cart) =>
+    const updatedProductsQuantity = cartItems.map((cart) =>
       cart._id === id ? { ...cart, quantity: cart.quantity + 1 } : cart
     );
-    setCartProduct(updatedProductsQuantity);
+    setCartItems(updatedProductsQuantity);
     const updatedCart = updatedProductsQuantity.find((cart) => cart._id === id);
     let res = await fetch("http://localhost:3000/cart/updateQuantity/" + id, {
       method: "PUT",
@@ -46,16 +28,16 @@ export default function CartPage({ decrement }) {
     });
   };
   const onDecrement = async (id) => {
-    const updatedProductsQuantity = cartProducts.map((cart) =>
+    const updatedProductsQuantity = cartItems.map((cart) =>
       cart._id === id ? { ...cart, quantity: cart.quantity - 1 } : cart
     );
 
     const updatedCart = updatedProductsQuantity.find((cart) => cart._id === id);
     if (updatedCart.quantity === 0) {
-      alert("Atleast It should be onr item");
+      alert("At least It should be one item");
       return;
     } else {
-      setCartProduct(updatedProductsQuantity);
+      setCartItems(updatedProductsQuantity);
       let res = await fetch("http://localhost:3000/cart/updateQuantity/" + id, {
         method: "PUT",
         headers: {
@@ -77,27 +59,27 @@ export default function CartPage({ decrement }) {
       },
     });
     if (res.ok == true) {
-      let updatedCartItems = cartProducts.filter(
+      let updatedCartItems = cartItems.filter(
         (cartItem) => cartItem._id !== dbCartId
       );
-      decrement();
-      setCartProducts(updatedCartItems);
+
+      setCartItems(updatedCartItems);
     }
   };
 
   //getting total price
   useEffect(() => {
-    if (cartProducts) {
-      let cost = cartProducts.reduce(
+    if (cartItems) {
+      let cost = cartItems.reduce(
         (acc, cart) => acc + cart.price * cart.quantity,
         0
       );
       setTotalPrice(cost);
     }
-  }, [cartProducts]);
+  }, [cartItems]);
 
-  return cartProducts ? (
-    cartProducts.length === 0 ? (
+  return cartItems ? (
+    cartItems.length === 0 ? (
       <div className='flex min-h-[100dvh] flex-col items-center justify-center bg-background px-4 py-12 sm:px-6 lg:px-8'>
         <div className='mx-auto max-w-md text-center'>
           <div className='mx-auto h-12 w-12' />
@@ -123,8 +105,8 @@ export default function CartPage({ decrement }) {
         <div className='cart-container mx-auto'>
           <h1 className='text-4xl pt-3 pb-4 font-bold'>Your Cart</h1>
           <div className='cart-card space-y-4 min-h-screen'>
-            {cartProducts &&
-              cartProducts.map((cartProduct) => (
+            {cartItems &&
+              cartItems.map((cartProduct) => (
                 <div
                   className='card bg-white shadow-lg w-5/6 h-44 rounded-2xl p-4 flex gap-6'
                   key={cartProduct._id}

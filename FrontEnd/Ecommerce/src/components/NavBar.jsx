@@ -1,12 +1,14 @@
 import Cookies from "js-cookie";
 import "../App.css";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useContext } from "react";
 import { Badge } from "@/components/ui/badge";
+import { CartContext } from "../context/cartContext";
+import { ShoppingCart } from "lucide-react";
 
 export default function NavBar({ cartCount }) {
   const navigate = useNavigate();
-
+  const { cartItems } = useContext(CartContext);
   const token = Cookies.get("token");
 
   return (
@@ -31,13 +33,14 @@ export default function NavBar({ cartCount }) {
             <a href='/favorite' className='font-semibold'>
               Favorites
             </a>
-            <a href='/cart' className='font-semibold'>
-              Cart
-              {cartCount === 0 ? (
-                ""
-              ) : (
-                <Badge variant='outline' className='bg-black text-white ml-1'>
-                  {cartCount}
+            <a href='/cart' className='font-semibold relative'>
+              <ShoppingCart className='h-6 w-7 text-black' />
+              {cartItems && cartItems.length > 0 && (
+                <Badge
+                  variant='destructive'
+                  className='absolute -top-2 -right-4 px-2 py-1 text-xs'
+                >
+                  {cartItems.length}
                 </Badge>
               )}
             </a>

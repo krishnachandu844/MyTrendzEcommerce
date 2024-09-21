@@ -41,7 +41,7 @@ export default function Signup() {
       toast.info("User created successfully", {
         position: "bottom-right",
       });
-      navigate("/home");
+      navigate("/login");
     } else {
       const data = await response.json();
       if (data.errors) {
