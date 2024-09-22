@@ -13,7 +13,6 @@ const authenticateJwt = (req, res, next) => {
         if (err) {
           return res.json({ message: "Issue with token" });
         }
-
         req.user = user;
         next();
       });

@@ -20,7 +20,6 @@ export default function Login() {
 
   const onClickLogin = async () => {
     if (username === "" || password === "") {
-      console.log(password);
       return toast.error("Type Something in fields", {
         position: "bottom-right",
       });
@@ -35,7 +34,7 @@ export default function Login() {
     if (response.ok === true) {
       const data = await response.json();
       Cookies.set("token", data.token, { expires: 1 });
-      navigate("/home");
+      window.location = "/home";
       toast.info("Logged in successfully", {
         position: "bottom-right",
       });

@@ -24,8 +24,8 @@ app.use("/favorite", favoriteRoute);
 //order razorpay
 app.post("/orders", async (req, res) => {
   const razorpay = new Razorpay({
-    key_id: "rzp_test_QJTNeOoTovszWR",
-    key_secret: "zecxgy1A9MnIX6eIRh7xdjVF",
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
 
   const options = {
@@ -50,8 +50,8 @@ app.post("/orders", async (req, res) => {
 app.get("/payment/:paymentId", async (req, res) => {
   const { paymentId } = req.params;
   const razorpay = new Razorpay({
-    key_id: "rzp_test_QJTNeOoTovszWR",
-    key_secret: "zecxgy1A9MnIX6eIRh7xdjVF",
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_KEY_SECRET,
   });
   try {
     const payment = await razorpay.payments.fetch(paymentId);

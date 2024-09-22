@@ -74,6 +74,7 @@ export const login = async (req, res) => {
     const token = jwt.sign(
       {
         userId: user._id,
+        username,
       },
       process.env.JWT_SECRET,
       {
@@ -86,5 +87,14 @@ export const login = async (req, res) => {
     });
   } else {
     return res.status(401).json({ message: "Password is incorrect" });
+  }
+};
+
+export const getUsername = async (req, res) => {
+  const { username } = req.user;
+  if (username) {
+    return res.json({ username });
+  } else {
+    return res.json({ message: "user is not logged in" });
   }
 };
