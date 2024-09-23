@@ -3,6 +3,16 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 export default function Login() {
   const navigate = useNavigate();
 
@@ -62,22 +72,23 @@ export default function Login() {
   };
 
   return (
-    <div className='flex justify-center items-center h-dvh '>
-      <div className='card  max-w-md w-1/2 rounded-lg p-6 shadow-lg'>
-        <h1 className='text-3xl font-semibold mb-2'>Login to your account</h1>
-        <p className='text-sm '>
-          Enter your email and password to access your account
-        </p>
-        <div className='mt-10'>
+    <div className='flex justify-center items-center h-dvh  login-container'>
+      <Card className='shadow-md'>
+        <CardHeader className='text-center space-y-2 '>
+          <CardTitle className='text-3xl'>Login to your account</CardTitle>
+          <CardDescription>
+            Enter your email and password to access your account
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
           <div className='space-y-2'>
-            <label htmlFor='email' className='heading-text-color font-medium'>
+            <Label htmlFor='email' className='heading-text-color font-medium'>
               Username
-            </label>
-            <input
+            </Label>
+            <Input
               type='text'
               name=''
               id='email'
-              className='mt-3 w-full focus:outline-none h-10 input-color rounded-md'
               placeholder='John Doe'
               value={username}
               onChange={(e) => {
@@ -91,18 +102,17 @@ export default function Login() {
           </div>
           <br />
           <div className='space-y-2 relative '>
-            <label
+            <Label
               htmlFor='password'
               className='heading-text-color font-medium'
             >
               Password
-            </label>
+            </Label>
 
-            <input
+            <Input
               type={passwordVisible ? "text" : "password"}
               name=''
               id='password'
-              className='mt-3 w-full  h-10 input-color rounded-md pr-10'
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -112,7 +122,7 @@ export default function Login() {
             <button
               className={`${
                 passwordError
-                  ? "absolute inset-y-0  right-0  flex items-center px-3  text-gray-500 text-xl"
+                  ? "absolute inset-y-0  right-0 -top-2 flex items-center px-3  text-gray-500 text-xl"
                   : "absolute inset-y-0 h-full right-0 pt-4 flex items-center px-3  text-gray-500 text-xl"
               }`}
               onClick={togglePasswordVisibility}
@@ -130,12 +140,12 @@ export default function Login() {
             </div>
           </div>
           <div className='mt-10'>
-            <button
+            <Button
               className='sign-up-button w-full h-10 rounded-md'
               onClick={onClickLogin}
             >
               Login
-            </button>
+            </Button>
           </div>
           <p className='mt-4 text-center'>
             Don't have an account ?{" "}
@@ -143,8 +153,8 @@ export default function Login() {
               signup
             </a>
           </p>
-        </div>
-      </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

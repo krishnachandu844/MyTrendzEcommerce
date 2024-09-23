@@ -52,8 +52,19 @@ input::placeholder {
 .card {
   background-color: hsl(var(--card));
 }
+.login-container {
+  background-image: url("https://images.unsplash.com/photo-1457301547464-91995555cd25?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8aW1hZ2VzJTIwZmZvciUyMGVjb21tZXJjZXxlbnwwfHwwfHx8MA%3D%3D");
+  height: 100vh;
+  background-size: cover;
+  width: 100vw;
+  overflow: hidden;
+}
 .sign-up-container {
-  background-color: hsl(var(--border));
+  background-image: url("https://images.pexels.com/photos/2850287/pexels-photo-2850287.jpeg?auto=compress&cs=tinysrgb&w=600");
+  height: 100vh;
+  background-size: cover;
+  width: 100%;
+  overflow: hidden;
 }
 
 /*PRODUCTS-CSS*/
