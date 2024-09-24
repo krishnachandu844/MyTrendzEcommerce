@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const authenticateJwt = (req, res, next) => {
+const adminAuthenticateJwt = (req, res, next) => {
   // const startTime = Date.now();
   const authHeader = req.headers.authorization;
 
@@ -8,7 +8,7 @@ const authenticateJwt = (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     if (token) {
-      jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      jwt.verify(token, process.env.ADMIN_JWT_SECRET, (err, user) => {
         if (err) {
           return res.json({ message: "Issue with token" });
         }
@@ -21,4 +21,4 @@ const authenticateJwt = (req, res, next) => {
   }
 };
 
-export default authenticateJwt;
+export default adminAuthenticateJwt;
