@@ -123,6 +123,23 @@ export default function Products() {
     init();
   }, []);
 
+  const productItems = async () => {
+    let response = await fetch("http://localhost:3000/myProducts/getProducts", {
+      method: "GET",
+    });
+
+    if (response.ok == true) {
+      const data = await response.json();
+      console.log(data);
+    } else {
+      console.log("unable to get data");
+    }
+  };
+
+  useEffect(() => {
+    productItems();
+  }, []);
+
   return products ? (
     <div className='bg-container'>
       <div className='products-container mx-auto'>

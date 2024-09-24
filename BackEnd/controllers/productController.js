@@ -2,13 +2,14 @@ import PRODUCT from "../models/productModel.js";
 import { v4 as uuidv4 } from "uuid";
 
 export const addProduct = async (req, res) => {
-  const { title, description, image, price } = req.body;
+  const { title, description, image, price, category } = req.body;
   const newProduct = new PRODUCT({
     productId: uuidv4(),
     title,
     description,
     image,
     price,
+    category,
   });
   await newProduct.save();
   if (newProduct) {

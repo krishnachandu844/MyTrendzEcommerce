@@ -22,6 +22,7 @@ export default function NavBar() {
     });
     if (res.ok) {
       const data = await res.json();
+      console.log(data);
       setUserName(data.username);
     }
   };

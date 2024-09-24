@@ -8,7 +8,7 @@ const authenticateJwt = (req, res, next) => {
     const token = authHeader.split(" ")[1];
 
     if (token) {
-      jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      jwt.verify(token, process.env.USER_JWT_SECRET, (err, user) => {
         if (err) {
           return res.json({ message: "Issue with token" });
         }
