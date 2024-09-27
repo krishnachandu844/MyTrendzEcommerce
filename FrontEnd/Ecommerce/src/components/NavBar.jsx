@@ -5,13 +5,45 @@ import { useContext, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CartContext } from "../context/cartContext";
 import { ShoppingCart } from "lucide-react";
+
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { FaSearch } from "react-icons/fa";
 
 export default function NavBar() {
   const navigate = useNavigate();
   const { cartItems } = useContext(CartContext);
   const [username, setUserName] = useState("");
+  const [products, setProducts] = useState([]);
   const token = Cookies.get("token");
+
+  //searching items
+  const searchItems = (e) => {
+    const searchWord = e.target.value.toLowerCase();
+    const searchedProducts = products.filter((product) =>
+      product.title.toLowerCase().includes(searchWord)
+    );
+    console.log(searchedProducts);
+  };
+
+  //getting product items
+  const productItems = async () => {
+    let response = await fetch("http://localhost:3000/myProducts/getProducts", {
+      method: "GET",
+    });
+
+    if (response.ok == true) {
+      const data = await response.json();
+      setProducts(data.products);
+    } else {
+      console.log("unable to get data");
+    }
+  };
+
+  useEffect(() => {
+    productItems();
+  }, []);
+
+  //getting username
   const getUser = async () => {
     const res = await fetch("http://localhost:3000/auth/me", {
       method: "GET",
@@ -22,7 +54,7 @@ export default function NavBar() {
     });
     if (res.ok) {
       const data = await res.json();
-      console.log(data);
+
       setUserName(data.username);
     }
   };
@@ -35,11 +67,10 @@ export default function NavBar() {
 
   return (
     <div className='sticky top-0 z-10 bg-white'>
-      {/* <nav className='flex justify-between  p-6 items-center h-14 navbar mx-auto'> */}
       <nav
         className={`flex ${
           token ? "" : "justify-between"
-        } p-6 items-center h-14 navbar mx-auto`}
+        } p-6 items-center h-16 navbar mx-auto`}
       >
         <h1
           className='text-2xl font-black cursor-pointer'
@@ -62,7 +93,15 @@ export default function NavBar() {
                 Favorites
               </a>
             </div>
-            <div className='flex items-center gap-7'>
+            <div className='flex items-center gap-7 '>
+              <div className='flex items-center relative'>
+                <input
+                  type='search'
+                  className='w-96 h-10  bg-gray-200 focus:bg-transparent rounded-md'
+                  onKeyDown={searchItems}
+                />
+                <FaSearch className='h-10 text-xl absolute right-3' />
+              </div>
               <a href='/cart' className='font-semibold relative'>
                 <ShoppingCart className='h-6 w-7 text-black' />
                 {cartItems && cartItems.length > 0 && (

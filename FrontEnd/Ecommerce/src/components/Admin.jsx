@@ -25,9 +25,10 @@ const Admin = () => {
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [category, setCategory] = useState("");
+  const [price, setPrice] = useState(0);
 
   const onClickAddProduct = async () => {
-    const productData = { title, image, description, category };
+    const productData = { title, image, description, category, price };
     let res = await fetch("http://localhost:3000/myProducts/addProduct", {
       method: "POST",
       headers: {
@@ -37,7 +38,12 @@ const Admin = () => {
     });
     if (res.ok === true) {
       const data = await res.json();
-      console.log(data);
+      toast.info("Product Added");
+      setTitle("");
+      setDescription("");
+      setCategory("");
+      setImage("");
+      setPrice(0);
     } else {
       toast.error("Unable to Add Product", { position: "bottom-right" });
     }
@@ -45,7 +51,7 @@ const Admin = () => {
 
   return (
     <div className='flex justify-center items-center h-screen bg-gray-200'>
-      <Card className='w-2/6 h-auto'>
+      <Card className='w-2/6 h-auto '>
         <CardHeader className='text-center space-y-2'>
           <CardTitle className='text-3xl'>Admin Dashboard</CardTitle>
           <CardDescription>
@@ -62,28 +68,32 @@ const Admin = () => {
               name=''
               id='name'
               placeholder='Title'
+              value={title}
               onChange={(e) => {
                 setTitle(e.target.value);
               }}
             />
           </div>
-          <br />
-          <div className='space-y-2'>
+
+          <div className='space-y-2 mt-4'>
             <Label htmlFor='image'>Image</Label>
             <Input
               type='text'
-              name=''
-              id='email'
+              name='image'
+              id='image'
               placeholder='ImageLink'
+              value={image}
               onChange={(e) => {
                 setImage(e.target.value);
               }}
             />
           </div>
-          <br />
-          <div className='space-y-2'>
+
+          <div className='space-y-2 mt-4'>
             <label htmlFor='Category'>Category</label>
             <Select
+              id='Category'
+              value={category}
               onValueChange={(value) => {
                 setCategory(value);
               }}
@@ -100,23 +110,39 @@ const Admin = () => {
               </SelectContent>
             </Select>
           </div>
-          <br />
-          <div className='space-y-2 relative'>
+
+          <div className='space-y-2  mt-4'>
             <Label
-              htmlFor='password'
+              htmlFor='description'
               className='heading-text-color font-medium '
             >
               Description
             </Label>
             <Textarea
+              id='description'
               placeholder='Description'
+              value={description}
               onChange={(e) => {
                 setDescription(e.target.value);
               }}
             />
           </div>
 
-          <div className='mt-10'>
+          <div className='space-y-2 mt-4'>
+            <Label htmlFor='Price'>Price</Label>
+            <Input
+              type='number'
+              name=''
+              id='Price'
+              placeholder='Price'
+              value={price}
+              onChange={(e) => {
+                setPrice(e.target.value);
+              }}
+            />
+          </div>
+
+          <div className='mt-5'>
             <Button className='w-full' onClick={onClickAddProduct}>
               Add Product
             </Button>
