@@ -27,3 +27,13 @@ export const getProducts = async (req, res) => {
     return res.status(401).json({ message: "Unable to get products" });
   }
 };
+
+export const singleProduct = async (req, res) => {
+  const { productId } = req.params;
+  const product = await PRODUCT.findById(productId);
+  if (product) {
+    res.json({ product });
+  } else {
+    return res.status(401).json({ message: "Unable to get product" });
+  }
+};
