@@ -25,9 +25,9 @@ function App() {
       <Routes>
         <Route path='/' element={<Signup />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/admin' element={<Admin />} />
         <Route element={<ProtectedRoute />}>
           <Route path='/home' element={<Home />} />
+          <Route path='/admin' element={<Admin />} />
           <Route path='/products' element={<Products />} />
           <Route path='/product/:productId' element={<Product />} />
           <Route path='/favorite' element={<Favorite />} />

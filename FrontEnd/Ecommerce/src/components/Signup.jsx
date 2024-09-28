@@ -39,13 +39,16 @@ export default function Signup() {
         position: "bottom-right",
       });
     }
-    let response = await fetch("http://localhost:3000/auth/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, email, password }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_FRONT_END_URL}/auth/signup`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, email, password }),
+      }
+    );
     if (response.ok === true) {
       const data = await response.json();
       Cookies.set("token", data.token, { expires: 1 });

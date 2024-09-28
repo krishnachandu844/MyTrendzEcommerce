@@ -5,7 +5,14 @@ import { useContext, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CartContext } from "../context/cartContext";
 import { ShoppingCart } from "lucide-react";
-
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaSearch } from "react-icons/fa";
 
@@ -13,23 +20,39 @@ export default function NavBar() {
   const navigate = useNavigate();
   const { cartItems } = useContext(CartContext);
   const [username, setUserName] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const token = Cookies.get("token");
+
+  //going for specific product onClick
+  const goToProduct = (id) => {
+    window.location = `/product/${id}`;
+  };
 
   //searching items
   const searchItems = (e) => {
     const searchWord = e.target.value.toLowerCase();
-    const searchedProducts = products.filter((product) =>
-      product.title.toLowerCase().includes(searchWord)
-    );
-    console.log(searchedProducts);
+    setSearchTerm(searchWord);
+    if (searchWord.length > 2) {
+      const searchedProducts = products.filter((product) =>
+        product.title.toLowerCase().includes(searchWord)
+      );
+      console.log(searchedProducts);
+      setFilteredProducts(searchedProducts);
+    } else {
+      setFilteredProducts([]);
+    }
   };
 
   //getting product items
   const productItems = async () => {
-    let response = await fetch("http://localhost:3000/myProducts/getProducts", {
-      method: "GET",
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_FRONT_END_URL}/myProducts/getProducts`,
+      {
+        method: "GET",
+      }
+    );
 
     if (response.ok == true) {
       const data = await response.json();
@@ -45,7 +68,7 @@ export default function NavBar() {
 
   //getting username
   const getUser = async () => {
-    const res = await fetch("http://localhost:3000/auth/me", {
+    const res = await fetch(`${import.meta.env.VITE_FRONT_END_URL}/auth/me`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -96,12 +119,41 @@ export default function NavBar() {
             <div className='flex items-center gap-7 '>
               <div className='flex items-center relative'>
                 <input
-                  type='search'
+                  type='text'
                   className='w-96 h-10  bg-gray-200 focus:bg-transparent rounded-md'
                   onKeyDown={searchItems}
+                  placeholder='Search Items'
                 />
                 <FaSearch className='h-10 text-xl absolute right-3' />
               </div>
+              {filteredProducts && filteredProducts.length > 0 ? (
+                <div className='absolute top-12 w-96 bg-white border border-gray-300 rounded-lg shadow-lg z-22 mt-5'>
+                  <ul>
+                    {filteredProducts.map((result) => (
+                      <li
+                        key={result._id}
+                        className='p-4 hover:bg-gray-100 cursor-pointer'
+                        onClick={() => goToProduct(result._id)}
+                      >
+                        <div className='flex gap-2'>
+                          <img
+                            src={result.image}
+                            alt={result.title}
+                            className='w-28 h-24'
+                          />
+                          <p className='font-bold'>{result.title}</p>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ) : searchTerm.length <= 1 ? (
+                ""
+              ) : (
+                <div className='absolute top-12 w-96 bg-white border border-gray-300 rounded-md shadow-lg z-20 p-2'>
+                  <p>No products matched</p>
+                </div>
+              )}
               <a href='/cart' className='font-semibold relative'>
                 <ShoppingCart className='h-6 w-7 text-black' />
                 {cartItems && cartItems.length > 0 && (
@@ -114,13 +166,36 @@ export default function NavBar() {
                 )}
               </a>
               <div className='flex items-center'>
-                <Avatar>
-                  {/* <AvatarImage src={`https://api.dicebear.com/6.x/initials/svg?seed=${username}`} /> */}
+                <DropdownMenu>
+                  <DropdownMenuTrigger className='flex items-center'>
+                    <Avatar>
+                      <AvatarFallback className='bg-red-500 text-white'>
+                        {username.charAt(0)}
+                      </AvatarFallback>
+                    </Avatar>
+                    <p className='ml-2 font-sans font-semibold'>{username}</p>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent>
+                    <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem
+                      onClick={() => {
+                        window.location = "/admin";
+                      }}
+                    >
+                      Admin Dashboard
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>Billing</DropdownMenuItem>
+                    <DropdownMenuItem>Team</DropdownMenuItem>
+                    <DropdownMenuItem>Subscription</DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+
+                {/* <Avatar>
                   <AvatarFallback className='bg-red-500 text-white'>
                     {username.charAt(0)}
                   </AvatarFallback>
-                </Avatar>
-                <span className='ml-2 font-sans font-semibold'>{username}</span>
+                </Avatar> */}
               </div>
               <button
                 className='sign-up-button w-24 h-7  rounded-md'

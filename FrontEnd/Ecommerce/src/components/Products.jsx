@@ -11,9 +11,9 @@ export default function Products() {
   const token = Cookies.get("token");
   const { cartItems, setCartItems } = useContext(CartContext);
 
-  // const [products, setProducts] = useState();
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   //onClicking We go to single product
@@ -59,120 +59,119 @@ export default function Products() {
   };
 
   //Adding to Cart
-  // const onClickToAddCart = async (productId, title, price, image) => {
-  //   const cartData = { productId, title, price, image, quantity: 1 };
-  //   console.log(cartItems);
-  //   if (cartItems && cartItems.length > 0) {
-  //     const isCartPresent = cartItems.find(
-  //       (cart) => cart.productId === productId
-  //     );
-  //     console.log(isCartPresent);
-  //     if (isCartPresent) {
-  //       // Update quantity if product exists in the cart
-  //       const updatedProductsQuantity = cartItems.map((cart) =>
-  //         cart.productId === productId
-  //           ? { ...cart, quantity: cart.quantity + 1 }
-  //           : cart
-  //       );
-  //       setCartItems(updatedProductsQuantity);
+  const onClickToAddCart = async (productId, title, price, image) => {
+    const cartData = { productId, title, price, image, quantity: 1 };
+    if (cartItems && cartItems.length > 0) {
+      const isCartPresent = cartItems.find(
+        (cart) => cart.productId === productId
+      );
+      if (isCartPresent) {
+        // Update quantity if product exists in the cart
+        const updatedProductsQuantity = cartItems.map((cart) =>
+          cart.productId === productId
+            ? { ...cart, quantity: cart.quantity + 1 }
+            : cart
+        );
+        setCartItems(updatedProductsQuantity);
 
-  //       const updatedCart = updatedProductsQuantity.find(
-  //         (cart) => cart.productId === productId
-  //       );
+        const updatedCart = updatedProductsQuantity.find(
+          (cart) => cart.productId === productId
+        );
 
-  //       // Use `_id` to update cart item on the server
-  //       let res = await fetch(
-  //         `http://localhost:3000/cart/updateQuantity/${updatedCart._id}`,
-  //         {
-  //           method: "PUT",
-  //           headers: {
-  //             "Content-Type": "application/json",
-  //             Authorization: `Bearer ${token}`,
-  //           },
-  //           body: JSON.stringify({ quantity: updatedCart.quantity }),
-  //         }
-  //       );
+        // Use `_id` to update cart item on the server
+        let res = await fetch(
+          `${import.meta.env.VITE_FRONT_END_URL}/cart/updateQuantity/${
+            updatedCart._id
+          }`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ quantity: updatedCart.quantity }),
+          }
+        );
 
-  //       if (res.ok) {
-  //         toast.info("Updated Quantity", {
-  //           position: "bottom-right",
-  //         });
-  //       } else {
-  //         console.error("Failed to update the cart on the server");
-  //       }
-  //     } else {
-  //       // Add new product to cart if it doesn't exist
-  //       const res = await fetch("http://localhost:3000/cart/addCart", {
-  //         method: "POST",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${token}`,
-  //         },
-  //         body: JSON.stringify(cartData),
-  //       });
+        if (res.ok) {
+          toast.info("Updated Quantity", {
+            position: "bottom-right",
+          });
+        } else {
+          console.error("Failed to update the cart on the server");
+        }
+      } else {
+        // Add new product to cart if it doesn't exist
+        const res = await fetch(
+          `${import.meta.env.VITE_FRONT_END_URL}/cart/addCart`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(cartData),
+          }
+        );
 
-  //       if (res.ok) {
-  //         const data = await res.json();
+        if (res.ok) {
+          const data = await res.json();
 
-  //         // Add the returned item (with _id) to the cart
-  //         setCartItems((prevItems) => [
-  //           ...prevItems,
-  //           { ...data.newCartItem, quantity: 1 },
-  //         ]);
+          // Add the returned item (with _id) to the cart
+          setCartItems((prevItems) => [
+            ...prevItems,
+            { ...data.newCartItem, quantity: 1 },
+          ]);
 
-  //         toast.info("Added to cart", {
-  //           position: "bottom-right",
-  //         });
-  //       }
-  //     }
-  //   } else {
-  //     // If the cart is empty, add the product
-  //     const res = await fetch("http://localhost:3000/cart/addCart", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       body: JSON.stringify(cartData),
-  //     });
+          toast.info("Added to cart", {
+            position: "bottom-right",
+          });
+        }
+      }
+    } else {
+      // If the cart is empty, add the product
+      const res = await fetch(
+        `${import.meta.env.VITE_FRONT_END_URL}/cart/addCart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(cartData),
+        }
+      );
 
-  //     if (res.ok) {
-  //       const data = await res.json();
+      if (res.ok) {
+        const data = await res.json();
 
-  //       // Add the returned item (with _id) to the cart
-  //       setCartItems([{ ...data.newCartItem, quantity: 1 }]);
+        setCartItems([{ ...data.newCartItem, quantity: 1 }]);
 
-  //       toast.info("Added to cart", {
-  //         position: "bottom-right",
-  //       });
-  //     }
-  //   }
-  // };
+        toast.info("Added to cart", {
+          position: "bottom-right",
+        });
+      }
+    }
+  };
 
   //Getting Products
-  // const init = async () => {
-  //   let response = await fetch("https://fakestoreapi.com/products", {
-  //     method: "GET",
-  //   });
-
-  //   const data = await response.json();
-
-  //   setProducts(data);
-  // };
-
-  // useEffect(() => {
-  //   init();
-  // }, []);
-
   const productItems = async () => {
-    let response = await fetch("http://localhost:3000/myProducts/getProducts", {
-      method: "GET",
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_FRONT_END_URL}/myProducts/getProducts`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     if (response.ok == true) {
       const data = await response.json();
       setProducts(data.products);
       setAllProducts(data.products);
+      setLoading(false);
     } else {
       console.log("unable to get data");
     }
@@ -182,15 +181,36 @@ export default function Products() {
     productItems();
   }, []);
 
-  return Products ? (
+  if (loading) {
+    return (
+      <div className='flex justify-center items-center h-screen'>
+        <TailSpin
+          visible={true}
+          height='200'
+          width='100'
+          color='black'
+          ariaLabel='tail-spin-loading'
+          radius='2'
+          wrapperStyle={{}}
+          wrapperClass=''
+        />
+      </div>
+    );
+  }
+
+  return (
     <div className='bg-container bg-gray-100'>
       <div className='products-container mx-auto py-2'>
         <div className='bg-white h-32 flex items-center products-container mx-auto rounded-lg'>
           <div className=' flex  justify-center products-container mx-auto p-6 mt-2'>
             <button
-              className='mx-14 w-28 h-24 rounded-md  hover:bg-gray-200'
+              className='mx-14 w-28 rounded-md flex flex-col items-center'
               onClick={onClickGetAllProducts}
             >
+              <img
+                src='https://files.oaiusercontent.com/file-M6iPgj9pmgzdbdhuS7a3r5MD?se=2024-09-28T09%3A28%3A11Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D3a54e595-b147-4145-96bb-66ca805b2793.webp&sig=063ZRegwwjAGqa3zgs3jOTY6yMjxrnDlscaP22HoPfA%3D'
+                className='h-20 rounded-md'
+              />
               All Products
             </button>
             <button className='mx-14' onClick={onClickGetElectronics}>
@@ -232,53 +252,6 @@ export default function Products() {
             </button>
           </div>
         </div>
-
-        {/* <h1 className='text-5xl font-extrabold mb-6 pt-6'>Our Products</h1> */}
-        {/* <div className='product-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {products &&
-            products.map((product) => (
-              <div className='card shadow-lg rounded-xl p-8' key={product.id}>
-                <div
-                  className=' w-full h-56 mb-4 flex items-center justify-center overflow-hidden rounded-lg'
-                  onClick={() => {
-                    goToProduct(product.id);
-                  }}
-                >
-                  <img
-                    src={product.image}
-                    alt={product.title}
-                    className='w-full h-full object-contain'
-                  />
-                </div>
-                <div className='h-48'>
-                  <div className='h-36'>
-                    <h2 className='text-xl font-bold mt-2 mb-2'>
-                      {product.title}
-                    </h2>
-                  </div>
-
-                  <h2 className='text-lg font-extrabold product-heading  '>
-                    ${product.price}
-                  </h2>
-                </div>
-                <div className='w-full mt-5'>
-                  <button
-                    className='sign-up-button w-full h-10 rounded-md'
-                    onClick={() => {
-                      onClickToAddCart(
-                        product.id,
-                        product.title,
-                        product.price,
-                        product.image
-                      );
-                    }}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            ))}
-        </div> */}
         {/* flipkart products */}
         <div className='fkart-items-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-2'>
           {products &&
@@ -291,6 +264,9 @@ export default function Products() {
                         src={product.image}
                         alt={product.title}
                         className='w-full h-full object-contain'
+                        onClick={() => {
+                          goToProduct(product._id);
+                        }}
                       />
                     </div>
                   </CardHeader>
@@ -299,26 +275,25 @@ export default function Products() {
                       <p className='font-bold'>{product.title}</p>
                       <p className='mt-2'>Rs.{product.price}</p>
                     </div>
-                    <Button className='my-4 w-full'>Add to Cart</Button>
+                    <Button
+                      className='my-4 w-full'
+                      onClick={() => {
+                        onClickToAddCart(
+                          product.productId,
+                          product.title,
+                          product.price,
+                          product.image
+                        );
+                      }}
+                    >
+                      Add to Cart
+                    </Button>
                   </CardContent>
                 </Card>
               </div>
             ))}
         </div>
       </div>
-    </div>
-  ) : (
-    <div className='flex justify-center items-center h-screen'>
-      <TailSpin
-        visible={true}
-        height='200'
-        width='100'
-        color='black'
-        ariaLabel='tail-spin-loading'
-        radius='2'
-        wrapperStyle={{}}
-        wrapperClass=''
-      />
     </div>
   );
 }

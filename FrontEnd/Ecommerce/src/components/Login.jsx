@@ -13,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 export default function Login() {
   const navigate = useNavigate();
 
@@ -34,20 +35,20 @@ export default function Login() {
         position: "bottom-right",
       });
     }
-    let response = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username, password }),
-    });
+    let response = await fetch(
+      `${import.meta.env.VITE_FRONT_END_URL}/auth/login`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      }
+    );
     if (response.ok === true) {
       const data = await response.json();
-      Cookies.set("token", data.token, { expires: 1 });
+      Cookies.set("token", data.token, { expires: 7 });
       window.location = "/home";
-      toast.info("Logged in successfully", {
-        position: "bottom-right",
-      });
     } else {
       const data = await response.json();
       if (data.errors) {

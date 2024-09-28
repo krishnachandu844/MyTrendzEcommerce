@@ -15,7 +15,7 @@ export default function Product() {
   // getting favorite items
   const favorite = async () => {
     const response = await fetch(
-      "http://localhost:3000/favorite/getFavoriteItems",
+      `${import.meta.env.VITE_FRONT_END_URL}/favorite/getFavoriteItems`,
       {
         method: "GET",
         headers: {
@@ -39,6 +39,7 @@ export default function Product() {
   //adding items to favorite section
   const addFavoriteItems = async (productId, title, image, price) => {
     const data = { productId, title, image, price };
+    console.log(productId);
     if (favoriteItems && favoriteItems.length > 0) {
       const isFavPresent = favoriteItems.find(
         (fav) => fav.productId === productId
@@ -49,7 +50,7 @@ export default function Product() {
       } else {
         //adding if fav item is not present
         const response = await fetch(
-          "http://localhost:3000/favorite/addFavoriteItems",
+          `${import.meta.env.VITE_FRONT_END_URL}/favorite/addFavoriteItems`,
           {
             method: "POST",
             headers: {
@@ -70,7 +71,7 @@ export default function Product() {
     } else {
       //Adding if the favorite Items are Empty
       const response = await fetch(
-        "http://localhost:3000/favorite/addFavoriteItems",
+        `${import.meta.env.VITE_FRONT_END_URL}/favorite/addFavoriteItems`,
         {
           method: "POST",
           headers: {
@@ -114,7 +115,9 @@ export default function Product() {
         );
 
         let res = await fetch(
-          `http://localhost:3000/cart/updateQuantity/${updatedCart._id}`,
+          `${import.meta.env.VITE_FRONT_END_URL}/cart/updateQuantity/${
+            updatedCart._id
+          }`,
           {
             method: "PUT",
             headers: {
@@ -134,14 +137,17 @@ export default function Product() {
         }
       } else {
         // Adding new product to cart if it doesn't exist
-        const res = await fetch("http://localhost:3000/cart/addCart", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(cartData),
-        });
+        const res = await fetch(
+          `${import.meta.env.VITE_FRONT_END_URL}/cart/addCart`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(cartData),
+          }
+        );
 
         if (res.ok) {
           const data = await res.json();
@@ -158,14 +164,17 @@ export default function Product() {
       }
     } else {
       //cart is empty adding the product
-      const res = await fetch("http://localhost:3000/cart/addCart", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(cartData),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_FRONT_END_URL}/cart/addCart`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(cartData),
+        }
+      );
 
       if (res.ok) {
         const data = await res.json();
@@ -181,14 +190,22 @@ export default function Product() {
 
   const init = async () => {
     let response = await fetch(
-      "https://fakestoreapi.com/products/" + productId,
+      `${import.meta.env.VITE_FRONT_END_URL}/myProducts/singleProduct/` +
+        productId,
       {
         method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
-    const data = await response.json();
-
-    setProduct(data);
+    if (response.ok === true) {
+      const data = await response.json();
+      setProduct(data.product);
+    } else {
+      console.log("Error");
+    }
   };
 
   useEffect(() => {
@@ -196,34 +213,36 @@ export default function Product() {
   }, []);
 
   return product ? (
-    <div className='bg-container'>
+    <div className='bg-container bg-gray-200 min-h-screen'>
       <div className='product-container mx-auto'>
         {/* //product section // */}
         {product && (
           <div className='p-4 flex flex-1'>
-            <div className='image-container bg-color rounded-lg w-1/2 flex items-center justify-center overflow-hidden p-2 shadow-lg'>
+            <div className='image-container bg-color rounded-lg w-1/2 h-96 flex items-center justify-center overflow-hidden p-2 shadow-lg'>
               <img
                 src={product.image}
                 alt={product.title}
                 className='w-full h-full object-contain'
               />
             </div>
-            <div className='product-desc-container ml-5 w-1/2'>
-              <h1 className='title  w-full m-2 text-3xl font-extrabold'>
+            <div className='product-desc-container ml-2 w-1/2 h-96 '>
+              <h1 className='title  w-full ml-2 my-1 text-3xl font-extrabold line-clamp-1'>
                 {product.title}
               </h1>
-              <h1 className='m-2 text-2xl font-black product-heading'>
-                ${product.price}
-              </h1>
-              <p className='description w-full m-2 h-44 mt-8 text-lg from-neutral-500 font-sans overflow-y-auto'>
-                {product.description}
-              </p>
-              <div className='mt-24 flex w-full'>
+              <h1 className='ml-2 my-1 text-2xl h-10'>Rs.{product.price}</h1>
+              <div className='flex ml-2'>
+                <p className='mt-1 mr-8 font-bold'>Description:</p>
+                <p className='description w-full  h-60 text-lg text-gray-500 font-sans italic line-clamp-4 overflow-y-auto'>
+                  {product.description}
+                </p>
+              </div>
+
+              <div className=' flex w-full mt-3'>
                 <button
                   className='sign-up-button w-full h-10 rounded-md'
                   onClick={() => {
                     onClickToAddCart(
-                      product.id,
+                      product.productId,
                       product.title,
                       product.price,
                       product.image
@@ -236,7 +255,7 @@ export default function Product() {
                   className='fav-btn w-full h-10 ml-2 rounded-md hover:text-red-400'
                   onClick={() => {
                     addFavoriteItems(
-                      product.id,
+                      product.productId,
                       product.title,
                       product.image,
                       product.price

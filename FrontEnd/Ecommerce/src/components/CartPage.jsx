@@ -16,14 +16,17 @@ export default function CartPage() {
     );
     setCartItems(updatedProductsQuantity);
     const updatedCart = updatedProductsQuantity.find((cart) => cart._id === id);
-    let res = await fetch("http://localhost:3000/cart/updateQuantity/" + id, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ quantity: updatedCart.quantity }),
-    });
+    let res = await fetch(
+      `${import.meta.env.VITE_FRONT_END_URL}/cart/updateQuantity/` + id,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ quantity: updatedCart.quantity }),
+      }
+    );
   };
   const onDecrement = async (id) => {
     const updatedProductsQuantity = cartItems.map((cart) =>
@@ -36,26 +39,32 @@ export default function CartPage() {
       return;
     } else {
       setCartItems(updatedProductsQuantity);
-      let res = await fetch("http://localhost:3000/cart/updateQuantity/" + id, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ quantity: updatedCart.quantity }),
-      });
+      let res = await fetch(
+        `${import.meta.env.VITE_FRONT_END_URL}cart/updateQuantity/` + id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ quantity: updatedCart.quantity }),
+        }
+      );
     }
   };
 
   //Deleting cart
   const deleteCart = async (cartId, dbCartId) => {
-    let res = await fetch("http://localhost:3000/cart/" + dbCartId, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    let res = await fetch(
+      `${import.meta.env.VITE_FRONT_END_URL}/cart/` + dbCartId,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (res.ok == true) {
       let updatedCartItems = cartItems.filter(
         (cartItem) => cartItem._id !== dbCartId
@@ -120,9 +129,7 @@ export default function CartPage() {
                     <h1 className='text-2xl h-3/4 font-bold'>
                       {cartProduct.title}
                     </h1>
-                    <h4 className='h-full product-heading font-bold text-xl'>
-                      ${cartProduct.price}
-                    </h4>
+                    <h4 className='h-full text-xl'>Rs.{cartProduct.price}</h4>
                   </div>
                   <div className='flex gap-6 items-center'>
                     <div className='hover:bg-slate-200'>
@@ -164,9 +171,7 @@ export default function CartPage() {
         <div className='total-bill-count bg-white h-44 w-96 shadow-lg rounded-lg p-4 sticky bottom-0 right-0 ml-auto m-10'>
           <div className='flex justify-between'>
             <h1 className='text-2xl font-bold'>Total</h1>
-            <h1 className='text-xl product-heading font-bold'>
-              ${parseFloat(totalPrice.toFixed(2))}
-            </h1>
+            <h1 className='text-xl'>Rs.{parseFloat(totalPrice.toFixed(2))}</h1>
           </div>
           <div className='w-full mt-11'>
             <button

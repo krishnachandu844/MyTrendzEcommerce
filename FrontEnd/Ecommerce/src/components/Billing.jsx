@@ -1,6 +1,9 @@
 import Cookies from "js-cookie";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -10,9 +13,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { CartContext } from "../context/cartContext";
 
 export default function Billing() {
-  const [cartProducts, setCartProducts] = useState();
+  // const [cartProducts, setCartProducts] = useState();
+  const { cartItems } = useContext(CartContext);
   const { totalPrice } = useParams();
 
   const [responseId, setResponseId] = useState("");
@@ -60,7 +65,7 @@ export default function Billing() {
       currency: "INR",
     };
     console.log("click");
-    let res = await fetch("http://localhost:3000/orders", {
+    let res = await fetch(`${import.meta.env.VITE_FRONT_END_URL}/orders`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -123,16 +128,16 @@ export default function Billing() {
               <h2 className='text-3xl font-extrabold'>Order Summary</h2>
 
               <div className='max-h-80 overflow-y-scroll'>
-                {cartProducts &&
-                  cartProducts.map((product) => (
-                    <div key={product.productId}>
-                      <div className='flex justify-between w-4/5 m-4'>
+                {cartItems &&
+                  cartItems.map((product) => (
+                    <div key={product.productId} className='w-full'>
+                      <div className='flex justify-between  m-4'>
                         <div className='w-4/5'>
                           <h3 className='font-bold'>{product.title}</h3>
                         </div>
                         <div className=''>
                           <h3 className='font-bold'>
-                            ${parseFloat(product.price)}
+                            Rs.{parseFloat(product.price)}
                           </h3>
                           <p>Quantity: {product.quantity}</p>
                         </div>
@@ -141,23 +146,25 @@ export default function Billing() {
                     </div>
                   ))}
               </div>
-              <div className='flex justify-between w-4/5 m-4 '>
-                <h2>SubTotal</h2>
-                <h2>${totalPrice}</h2>
-              </div>
-              <div className='flex justify-between w-4/5 m-4'>
-                <h2>Shipping</h2>
-                <h2>$25.00</h2>
-              </div>
-              <div className='flex justify-between w-4/5 m-4'>
-                <h2>Tax</h2>
-                <h2>$17.00</h2>
+              <div className='w-full '>
+                <div className='flex justify-between py-2 w-4/5 mx-auto'>
+                  <h2>SubTotal</h2>
+                  <h2>Rs.{totalPrice}</h2>
+                </div>
+                <div className='flex justify-between py-2 w-4/5 mx-auto'>
+                  <h2>Shipping</h2>
+                  <h2>Rs.25.00</h2>
+                </div>
+                <div className='flex justify-between py-2 w-4/5 mx-auto'>
+                  <h2>Tax</h2>
+                  <h2>Rs.17.00</h2>
+                </div>
               </div>
               <hr />
-              <div className='flex justify-between w-4/5 m-4'>
+              <div className='flex justify-between w-4/5 mx-auto my-2'>
                 <h2 className='font-extrabold text-xl'>Total</h2>
                 <h2 className='font-extrabold text-xl'>
-                  {parseFloat(totalPrice) + 25.0 + 17.0}
+                  Rs.{parseFloat(totalPrice) + 25.0 + 17.0}
                 </h2>
               </div>
             </div>
@@ -166,30 +173,30 @@ export default function Billing() {
               <h2 className='text-3xl font-extrabold'>Billing Information</h2>
               <div className='py-14'>
                 <div className='grid gap-2'>
-                  <label htmlFor='name' className='font-bold'>
+                  <Label htmlFor='name' className='font-bold'>
                     Name
-                  </label>
-                  <input
+                  </Label>
+                  <Input
                     type='text'
                     name=''
                     id='name'
                     placeholder='Enter Your Name'
-                    className='rounded-lg text-xl p-2 input-color'
+                    className='rounded-lg text-xl p-2 '
                   />
                 </div>
                 <br />
                 <div className='grid gap-2'>
-                  <label htmlFor='address' className='font-bold'>
+                  <Label htmlFor='address' className='font-bold'>
                     Address
-                  </label>
-                  <textarea
+                  </Label>
+                  <Textarea
                     name=''
                     id='address'
                     placeholder='Enter Your Address'
-                    className='rounded-lg p-2 input-color'
+                    className='rounded-lg p-2'
                     cols={40}
                     rows={5}
-                  ></textarea>
+                  ></Textarea>
                 </div>
                 <div className='grid gap-2 mt-10'>
                   <Dialog>
@@ -209,7 +216,7 @@ export default function Billing() {
                         </DialogTitle>
                         <DialogDescription className='text-black'>
                           <span className='block py-6 text-center text-2xl font-bold'>
-                            Total: ${parseFloat(totalPrice)}
+                            Total: {parseFloat(totalPrice)}
                           </span>
 
                           <Button
