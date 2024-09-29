@@ -13,7 +13,7 @@ export default function Favorite() {
 
   const onClickToAddCart = async (productId, title, price, image) => {
     const cartData = { productId, title, price, image, quantity: 1 };
-    console.log(productId);
+
     if (cartItems && cartItems.length > 0) {
       const isCartPresent = cartItems.find(
         (cart) => cart.productId === productId
@@ -126,8 +126,6 @@ export default function Favorite() {
         (item) => item._id !== id
       );
       setFavoriteItems(updatedFavoriteItems);
-    } else {
-      console.log("Error");
     }
   };
 
@@ -146,9 +144,6 @@ export default function Favorite() {
     if (response.ok === true) {
       const data = await response.json();
       setFavoriteItems(data);
-      console.log(data);
-    } else {
-      console.log("Error");
     }
   };
 

@@ -162,7 +162,6 @@ export default function Products() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       }
     );
@@ -172,8 +171,6 @@ export default function Products() {
       setProducts(data.products);
       setAllProducts(data.products);
       setLoading(false);
-    } else {
-      console.log("unable to get data");
     }
   };
 

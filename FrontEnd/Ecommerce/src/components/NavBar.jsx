@@ -38,7 +38,7 @@ export default function NavBar() {
       const searchedProducts = products.filter((product) =>
         product.title.toLowerCase().includes(searchWord)
       );
-      console.log(searchedProducts);
+
       setFilteredProducts(searchedProducts);
     } else {
       setFilteredProducts([]);
@@ -57,8 +57,6 @@ export default function NavBar() {
     if (response.ok == true) {
       const data = await response.json();
       setProducts(data.products);
-    } else {
-      console.log("unable to get data");
     }
   };
 
@@ -75,8 +73,11 @@ export default function NavBar() {
         Authorization: `Bearer ${token}`,
       },
     });
-    if (res.ok) {
+    if (res.ok === true) {
       const data = await res.json();
+      if (data.message === "Issue with token") {
+        Cookies.remove("token");
+      }
 
       setUserName(data.username);
     }

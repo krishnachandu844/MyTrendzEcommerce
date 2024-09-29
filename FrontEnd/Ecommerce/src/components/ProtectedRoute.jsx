@@ -20,7 +20,7 @@ const ProtectedRoute = () => {
   }, [token]);
 
   if (isRedirecting) return null;
-  return token ? <Outlet /> : <Navigate to='/login' replace />;
+  return token ? <Outlet /> : <Navigate to='/login' />;
 };
 
 export default ProtectedRoute;

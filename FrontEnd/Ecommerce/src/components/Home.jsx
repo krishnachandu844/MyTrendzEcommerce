@@ -1,5 +1,12 @@
 import { CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -31,74 +38,143 @@ export default function Home() {
   ];
   return (
     <>
-      <div className='products-container mx-auto'>
-        <main className='flex-1 flex flex-col items-center justify-center'>
-          <section className='w-full py-12 md:py-24 lg:py-32 xl:py-48 bg-white h-screen'>
-            <div className='container px-4 md:px-6'>
-              <div className='flex flex-col items-center space-y-4 text-center'>
-                <div className='space-y-2'>
-                  <h1 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none'>
-                    Welcome to MyStore
-                  </h1>
-                  <p className='mx-auto max-w-[700px] text-gray-500 md:text-xl dark:text-gray-400'>
-                    Discover our latest collection of premium products.
-                  </p>
+      {/* <>
+          <div>
+            <Carousel className='w-full'>
+              <CarouselContent className=''>
+                <CarouselItem>
+                  <img
+                    src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f92f994e676b69090ecf6d/0.jpg'
+                    alt=''
+                  />
+                </CarouselItem>
+                <CarouselItem>
+                  <img
+                    src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f9331d4e676b69090ed593/2.jpg'
+                    alt=''
+                  />
+                </CarouselItem>
+                <CarouselItem>
+                  <img
+                    src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f933b4905a5068bd1ae780/2.jpg'
+                    alt=''
+                  />
+                </CarouselItem>
+                <CarouselItem>
+                  <img
+                    src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f92f994e676b69090ecf6d/3.jpg'
+                    alt=''
+                  />
+                </CarouselItem>
+              </CarouselContent>
+              <CarouselPrevious />
+              <CarouselNext />
+            </Carousel>
+          </div>
+
+          {}
+
+      {/* home section */}
+      <div className='products-container mx-auto relative h-5/6'>
+        <Carousel className=' object-contain mb-28'>
+          <CarouselContent className='h-5/6 '>
+            <CarouselItem className='flex items-center justify-center '>
+              <img
+                src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f92f994e676b69090ecf6d/0.jpg'
+                alt=''
+                className='w-full h-3/4'
+              />
+            </CarouselItem>
+            <CarouselItem className='flex items-center justify-center'>
+              <img
+                src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f9331d4e676b69090ed593/2.jpg'
+                alt=''
+                className='w-full h-3/4'
+              />
+            </CarouselItem>
+            <CarouselItem className='flex items-center justify-center'>
+              <img
+                src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f933b4905a5068bd1ae780/2.jpg'
+                alt=''
+                className='w-full h-3/4'
+              />
+            </CarouselItem>
+            <CarouselItem className='flex items-center justify-center'>
+              <img
+                src='https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFzaGlvbnxlbnwwfHwwfHx8MA%3D%3D'
+                alt=''
+                className='w-full h-3/4'
+              />
+            </CarouselItem>
+          </CarouselContent>
+          <CarouselPrevious />
+          <CarouselNext />
+        </Carousel>
+        <div className='flex flex-col items-center space-y-4 text-center absolute  top-80 right-72'>
+          <div>
+            <div className='space-y-2'>
+              <h1 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none  text-white'>
+                Welcome to MyTrendz
+              </h1>
+              <p className='mx-auto max-w-[700px] text-xl font-bold'>
+                Discover our latest collection of premium products.
+              </p>
+            </div>
+            <div className='space-x-4 mt-2'>
+              <button
+                className='sign-up-button h-12 w-28 rounded-lg'
+                onClick={() => {
+                  navigate("/products");
+                }}
+              >
+                Shop Now
+              </button>
+              <button
+                variant='outline'
+                className='bg-gray-50 h-12 w-28 rounded-lg'
+              >
+                Learn More
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* products section */}
+      <section className='w-full py-12 md:py-24 lg:py-32  bg-gray-50 h-screen flex flex-col items-center justify-center'>
+        <div className='container px-4 md:px-6'>
+          <h2 className='text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12'>
+            Featured Products
+          </h2>
+
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className='ml-4 shadow-lg flex flex-col items-center justify-center p-5 rounded-lg'
+              >
+                <div className='p-4 h-4/5 w-full bg-white'>
+                  <img
+                    alt={product.title}
+                    className='w-full h-full object-contain'
+                    src={product.image}
+                  />
                 </div>
-                <div className='space-x-4'>
-                  <button
-                    className='sign-up-button h-12 w-28 rounded-lg'
-                    onClick={() => {
-                      navigate("/products");
-                    }}
-                  >
-                    Shop Now
-                  </button>
-                  <button
-                    variant='outline'
-                    className='bg-gray-50 h-12 w-28 rounded-lg'
-                  >
-                    Learn More
+                <div className='flex flex-col items-start'>
+                  <div className='text-lg font-bold'>{product.title}</div>
+                  <p className='text-sm text-gray-500 dark:text-gray-400'>
+                    ${product.price}
+                  </p>
+                  <button className='mt-2 w-32 rounded-lg sign-up-button h-8'>
+                    Add to Cart
                   </button>
                 </div>
               </div>
-            </div>
-          </section>
-        </main>
-        {/* products section */}
-        <section className='w-full py-12 md:py-24 lg:py-32  bg-gray-50 h-screen flex flex-col items-center justify-center'>
-          <div className='container px-4 md:px-6'>
-            <h2 className='text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12'>
-              Featured Products
-            </h2>
-
-            <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-              {products.map((product) => (
-                <div
-                  key={product.id}
-                  className='ml-4 shadow-lg flex flex-col items-center justify-center p-5 rounded-lg'
-                >
-                  <div className='p-4 h-4/5 w-full bg-white'>
-                    <img
-                      alt={product.title}
-                      className='w-full h-full object-contain'
-                      src={product.image}
-                    />
-                  </div>
-                  <div className='flex flex-col items-start'>
-                    <div className='text-lg font-bold'>{product.title}</div>
-                    <p className='text-sm text-gray-500 dark:text-gray-400'>
-                      ${product.price}
-                    </p>
-                    <button className='mt-2 w-32 rounded-lg sign-up-button h-8'>
-                      Add to Cart
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
+
       {/* about section */}
       <section className='w-full py-12 md:py-24 lg:py-32 h-screen flex flex-col items-center justify-center'>
         <div className='container px-4 md:px-6'>

@@ -27,8 +27,6 @@ export default function Product() {
     if (response.ok === true) {
       const data = await response.json();
       setFavoriteItems(data);
-    } else {
-      console.log("Error");
     }
   };
 
@@ -39,12 +37,12 @@ export default function Product() {
   //adding items to favorite section
   const addFavoriteItems = async (productId, title, image, price) => {
     const data = { productId, title, image, price };
-    console.log(productId);
+
     if (favoriteItems && favoriteItems.length > 0) {
       const isFavPresent = favoriteItems.find(
         (fav) => fav.productId === productId
       );
-      console.log(isFavPresent);
+
       if (isFavPresent) {
         toast.error("Already added to favorites", { position: "bottom-right" });
       } else {
@@ -64,8 +62,6 @@ export default function Product() {
           const data = await response.json();
           setFavoriteItems((prevFav) => [...prevFav, ...data.newFavoriteItem]);
           toast.info("Added to favorites", { position: "bottom-right" });
-        } else {
-          console.log("Error");
         }
       }
     } else {
@@ -86,8 +82,6 @@ export default function Product() {
 
         setFavoriteItems([{ ...data.newFavoriteItem }]);
         toast.info("Added to favorites", { position: "bottom-right" });
-      } else {
-        console.log("Error");
       }
     }
   };
@@ -100,7 +94,7 @@ export default function Product() {
       const isCartPresent = cartItems.find(
         (cart) => cart.productId === productId
       );
-      console.log(isCartPresent);
+
       if (isCartPresent) {
         // Updating quantity if product exists in the cart
         const updatedProductsQuantity = cartItems.map((cart) =>
@@ -196,15 +190,12 @@ export default function Product() {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
         },
       }
     );
     if (response.ok === true) {
       const data = await response.json();
       setProduct(data.product);
-    } else {
-      console.log("Error");
     }
   };
 

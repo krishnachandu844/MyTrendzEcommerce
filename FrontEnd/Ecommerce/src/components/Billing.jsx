@@ -59,12 +59,11 @@ export default function Billing() {
 
   //razorpay
   const createRazorpay = async (amount) => {
-    console.log(amount);
     let data = {
       amount: amount * 100, // Converting rupees to paise
       currency: "INR",
     };
-    console.log("click");
+
     let res = await fetch(`${import.meta.env.VITE_FRONT_END_URL}/orders`, {
       method: "POST",
       headers: {
@@ -74,10 +73,8 @@ export default function Billing() {
     });
     if (res.ok === true) {
       const data = await res.json();
-      console.log(data);
+
       handleRazorPayScreen(data.amount);
-    } else {
-      console.log("error");
     }
   };
 

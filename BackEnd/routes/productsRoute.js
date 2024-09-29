@@ -11,8 +11,8 @@ const router = express.Router();
 
 router.post("/addProduct", authenticateJwt, addProduct);
 
-router.get("/getProducts", authenticateJwt, getProducts);
+router.get("/getProducts", getProducts);
 
-router.get("/singleProduct/:productId", authenticateJwt, singleProduct);
+router.get("/singleProduct/:productId", singleProduct);
 
 export default router;
