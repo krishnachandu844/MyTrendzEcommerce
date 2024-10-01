@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
@@ -10,6 +11,8 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       colors: {
+        homePrimary: "#F83737",
+
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         card: {

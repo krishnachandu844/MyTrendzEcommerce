@@ -27,31 +27,6 @@
   width: 1250px;
 }
 
-/*input-boxes-styling*/
-.input-color {
-  background-color: hsl(var(--muted));
-}
-.input-color:focus {
-  border-color: hsl(var(--border));
-  border: 1.8px solid;
-  outline: none;
-}
-input::placeholder {
-  padding-left: 10px;
-  font-size: 15px;
-}
-.heading-text-color {
-  color: hsl(var(--primary));
-}
-
-/*sign-up-component-styles*/
-.sign-up-button {
-  background-color: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-}
-.card {
-  background-color: hsl(var(--card));
-}
 .login-container {
   background-image: url("https://images.unsplash.com/photo-1457301547464-91995555cd25?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8aW1hZ2VzJTIwZmZvciUyMGVjb21tZXJjZXxlbnwwfHwwfHx8MA%3D%3D");
   height: 100vh;
@@ -67,56 +42,16 @@ input::placeholder {
   overflow: hidden;
 }
 
-/*PRODUCTS-CSS*/
-.bg-container {
-  background-color: hsl(var(--muted));
+/*Home-Container*/
+.home-page-bg-img {
+  background-image: url(../assets/HomSectionImages/HomeFrame.jpg);
+  background-size: cover;
+  height: 100vh;
 }
 
-.products-container {
-  width: 1200px;
+.home-page-head {
+  color: #ffae5d;
 }
-
-.product-heading {
-  color: #108934;
-}
-
-/**PRODUCT-CSS**/
-.product-container {
-  width: 1200px;
-}
-
-.image-container {
-  height: 500px;
-  width: 550px;
-}
-.bg-color {
-  background-color: hsl(var(--card));
-}
-.fav-btn {
-  background-color: white;
-}
-
-/*CART CONTAINER*/
-.cart-container {
-  width: 1200px;
-}
-.cart-image-container {
-  width: 250px;
-  height: 150px;
-}
-.btn {
-  height: 35px;
-  width: 55px;
-  border: 2px solid black;
-}
-
-/*billing section*/
-.billing-container {
-  background-color: hsl(var(--muted));
-}
-.order-summary-container {
-  border: 0.5px solid grey;
-}
-.btn-color {
-  background-color: hsl(var(--destructive));
+.home-page-card_-color {
+  color: #f83737;
 }

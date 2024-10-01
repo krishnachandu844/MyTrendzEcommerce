@@ -1,12 +1,18 @@
 import { CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import Clothing from "../../assets/HomSectionImages/Clothing.jpg";
+import Jeweller from "../../assets/HomSectionImages/Jeweller.jpg";
+import Watches from "../../assets/HomSectionImages/Watches.jpg";
+import MobileFrame from "../../assets/HomSectionImages/MobileFrame.jpg";
 import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel";
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import "../App.css";
 
 export default function Home() {
   const navigate = useNavigate();
@@ -38,142 +44,172 @@ export default function Home() {
   ];
   return (
     <>
-      {/* <>
-          <div>
-            <Carousel className='w-full'>
-              <CarouselContent className=''>
-                <CarouselItem>
-                  <img
-                    src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f92f994e676b69090ecf6d/0.jpg'
-                    alt=''
-                  />
-                </CarouselItem>
-                <CarouselItem>
-                  <img
-                    src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f9331d4e676b69090ed593/2.jpg'
-                    alt=''
-                  />
-                </CarouselItem>
-                <CarouselItem>
-                  <img
-                    src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f933b4905a5068bd1ae780/2.jpg'
-                    alt=''
-                  />
-                </CarouselItem>
-                <CarouselItem>
-                  <img
-                    src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f92f994e676b69090ecf6d/3.jpg'
-                    alt=''
-                  />
-                </CarouselItem>
-              </CarouselContent>
-              <CarouselPrevious />
-              <CarouselNext />
-            </Carousel>
-          </div>
-
-          {}
-
       {/* home section */}
-      <div className='products-container mx-auto relative h-5/6'>
-        <Carousel className=' object-contain mb-28'>
-          <CarouselContent className='h-5/6 '>
-            <CarouselItem className='flex items-center justify-center '>
-              <img
-                src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f92f994e676b69090ecf6d/0.jpg'
-                alt=''
-                className='w-full h-3/4'
-              />
-            </CarouselItem>
-            <CarouselItem className='flex items-center justify-center'>
-              <img
-                src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f9331d4e676b69090ed593/2.jpg'
-                alt=''
-                className='w-full h-3/4'
-              />
-            </CarouselItem>
-            <CarouselItem className='flex items-center justify-center'>
-              <img
-                src='https://cdnvb4.haiper.ai/jobs/66f92e934e676b69090ecd87/66f933b4905a5068bd1ae780/2.jpg'
-                alt=''
-                className='w-full h-3/4'
-              />
-            </CarouselItem>
-            <CarouselItem className='flex items-center justify-center'>
-              <img
-                src='https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZmFzaGlvbnxlbnwwfHwwfHx8MA%3D%3D'
-                alt=''
-                className='w-full h-3/4'
-              />
-            </CarouselItem>
-          </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
-        </Carousel>
-        <div className='flex flex-col items-center space-y-4 text-center absolute  top-80 right-72'>
+      <div className='w-full home-page-bg-img flex items-center justify-center'>
+        <div className='flex flex-col items-center space-y-4 text-center'>
           <div>
             <div className='space-y-2'>
-              <h1 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none  text-white'>
+              <h1 className='text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none   home-page-head'>
                 Welcome to MyTrendz
               </h1>
-              <p className='mx-auto max-w-[700px] text-xl font-bold'>
+              <p className='mx-auto max-w-[700px] text-xl font-bold text-white'>
                 Discover our latest collection of premium products.
               </p>
             </div>
             <div className='space-x-4 mt-2'>
-              <button
-                className='sign-up-button h-12 w-28 rounded-lg'
+              <Button
                 onClick={() => {
                   navigate("/products");
                 }}
               >
                 Shop Now
-              </button>
-              <button
-                variant='outline'
-                className='bg-gray-50 h-12 w-28 rounded-lg'
-              >
-                Learn More
-              </button>
+              </Button>
+              <Button variant='outline'>Learn More</Button>
             </div>
           </div>
         </div>
       </div>
 
-      {/* products section */}
-      <section className='w-full py-12 md:py-24 lg:py-32  bg-gray-50 h-screen flex flex-col items-center justify-center'>
-        <div className='container px-4 md:px-6'>
-          <h2 className='text-3xl font-bold tracking-tighter sm:text-5xl text-center mb-12'>
-            Featured Products
-          </h2>
+      {/**Items-section */}
 
-          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6'>
-            {products.map((product) => (
-              <div
-                key={product.id}
-                className='ml-4 shadow-lg flex flex-col items-center justify-center p-5 rounded-lg'
-              >
-                <div className='p-4 h-4/5 w-full bg-white'>
-                  <img
-                    alt={product.title}
-                    className='w-full h-full object-contain'
-                    src={product.image}
-                  />
-                </div>
-                <div className='flex flex-col items-start'>
-                  <div className='text-lg font-bold'>{product.title}</div>
-                  <p className='text-sm text-gray-500 dark:text-gray-400'>
-                    ${product.price}
-                  </p>
-                  <button className='mt-2 w-32 rounded-lg sign-up-button h-8'>
-                    Add to Cart
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+      <div className='h-dvh flex gap-4 items-center p-4'>
+        <div>
+          <img src={Watches} alt='' className='rounded-md' />
         </div>
-      </section>
+        <div>
+          <img src={Jeweller} alt='' className='rounded-md' />
+        </div>
+        <div>
+          <img src={Clothing} alt='' className='rounded-md' />
+        </div>
+      </div>
+
+      {/**Mobile Section */}
+      <div>
+        <img src={MobileFrame} alt='' className='p-2 rounded-lg' />
+      </div>
+
+      {/* products section */}
+      <h3 className='text-homePrimary font-bold text-4xl my-6 ml-6'>
+        Today Deals
+      </h3>
+      <div className='p-6 flex gap-6'>
+        <Card className='shadow-lg w-96 flex flex-col items-center'>
+          <CardHeader>
+            <CardTitle>
+              <div className=' rounded-md h-56 w-full'>
+                <img
+                  src='https://rukminim2.flixcart.com/image/612/612/jwgple80/watch/p/y/f/bq1126-fossil-original-imafh4ybgqgehxez.jpeg?q=70'
+                  alt=''
+                  className=' w-full h-full object-contain'
+                />
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <div className=' h-32'>
+              <p className='text-homePrimary font-bold text-xl '>
+                Flynn Analog Watch
+              </p>
+              <p className='text-black font-medium'>
+                This is a genuine Fossil product. The product comes with a
+                standard brand warranty of 2 Years.
+              </p>
+            </div>
+            <div className='flex justify-between items-center'>
+              <p className='text-homePrimary font-bold'>Rs.5,689</p>
+              <Button className='bg-homePrimary'>Buy Now</Button>
+            </div>
+          </CardContent>
+        </Card>
+        {/* Card-2 */}
+        <Card className='shadow-lg w-96 flex flex-col items-center'>
+          <CardHeader>
+            <CardTitle>
+              <div className=' rounded-md h-56 w-full'>
+                <img
+                  src='https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/c/v/p/-original-imah4jyfcjgcghqs.jpeg?q=70'
+                  alt=''
+                  className=' w-full h-full object-contain'
+                />
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <div className=' h-32'>
+              <p className='text-homePrimary font-bold text-xl '>
+                Apple iPhone 16 (Pink, 128 GB)
+              </p>
+              <p className='text-black font-medium line-clamp-3'>
+                The iPhone 16 introduces a new Camera Control button that
+                enhances photo and video settings with customizable gestures.
+              </p>
+            </div>
+            <div className='flex justify-between items-center'>
+              <p className='text-homePrimary font-bold'>Rs.79,900</p>
+              <Button className='bg-homePrimary'>Buy Now</Button>
+            </div>
+          </CardContent>
+        </Card>
+        {/* Card-3 */}
+        <Card className='shadow-lg w-96 flex flex-col items-center'>
+          <CardHeader>
+            <CardTitle>
+              <div className=' rounded-md h-56 w-full'>
+                <img
+                  src='https://rukminim2.flixcart.com/image/312/312/xif0q/television/i/8/0/-original-imah2dzwa44rbqds.jpeg?q=70'
+                  alt=''
+                  className=' w-full h-full object-contain'
+                />
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <div className=' h-32'>
+              <p className='text-homePrimary font-bold text-xl '>
+                SONY Bravia 2 125.7 cm (50 inch) Ultra HD (4K)
+              </p>
+              <p className='text-black font-medium line-clamp-3'>
+                This Sony Bravia Ultra HD 4K TV is integrated with Google TV
+                offering you endless entertainment all through the day.
+              </p>
+            </div>
+            <div className='flex justify-between items-center'>
+              <p className='text-homePrimary font-bold'>Rs.53,990</p>
+              <Button className='bg-homePrimary'>Buy Now</Button>
+            </div>
+          </CardContent>
+        </Card>
+        {/* Card-4 */}
+        <Card className='shadow-lg w-96 flex flex-col items-center'>
+          <CardHeader>
+            <CardTitle>
+              <div className=' rounded-md h-56 w-full'>
+                <img
+                  src='https://rukminim2.flixcart.com/image/312/312/xif0q/computer/k/2/u/-original-imah3zzjkjwumecn.jpeg?q=70'
+                  alt=''
+                  className=' w-full h-full object-contain'
+                />
+              </div>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className='space-y-4'>
+            <div className=' h-32'>
+              <p className='text-homePrimary font-bold text-xl '>
+                Acer Aspire 7 Intel Core i5 13th Gen 13420H
+              </p>
+              <p className='text-black font-medium'>
+                The Acer Aspire 7 gaming laptop combines powerful performance
+                with sleek portability.
+              </p>
+            </div>
+            <div className='flex justify-between items-center'>
+              <p className='text-homePrimary font-bold'>Rs.57,990</p>
+              <Button className='bg-homePrimary'>Buy Now</Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* about section */}
       <section className='w-full py-12 md:py-24 lg:py-32 h-screen flex flex-col items-center justify-center'>

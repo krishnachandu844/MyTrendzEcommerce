@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./App.css";
@@ -16,6 +17,8 @@ import Favorite from "./components/Favorite";
 import Home from "./components/Home";
 
 import Admin from "./components/Admin";
+import SignUpDup from "./components/SignUpDup";
+import LoginDup from "./components/LoginDup";
 
 function App() {
   return (
@@ -25,8 +28,10 @@ function App() {
       <Routes>
         <Route path='/' element={<Signup />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/signupDup' element={<SignUpDup />} />
+        <Route path='/loginDup' element={<LoginDup />} />
+        <Route path='/home' element={<Home />} />
         <Route element={<ProtectedRoute />}>
-          <Route path='/home' element={<Home />} />
           <Route path='/admin' element={<Admin />} />
           <Route path='/products' element={<Products />} />
           <Route path='/product/:productId' element={<Product />} />
