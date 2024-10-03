@@ -10,6 +10,9 @@ export default {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      width: {
+        custom: "1200px",
+      },
       colors: {
         homePrimary: "#F83737",
 

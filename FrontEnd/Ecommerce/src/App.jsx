@@ -21,20 +21,75 @@ import Admin from "./components/Admin";
 function App() {
   return (
     <BrowserRouter>
-      {/* <NavBar /> */}
       <ScrollToTop />
       <Routes>
         <Route path='/' element={<Signup />} />
         <Route path='/login' element={<Login />} />
 
         <Route element={<ProtectedRoute />}>
-          <Route path='/home' element={<Home />} />
-          <Route path='/admin' element={<Admin />} />
-          <Route path='/products' element={<Products />} />
-          <Route path='/product/:productId' element={<Product />} />
-          <Route path='/favorite' element={<Favorite />} />
-          <Route path='/cart' element={<CartPage />} />
-          <Route path='/Billing/:totalPrice' element={<Billing />} />
+          <Route
+            path='/home'
+            element={
+              <>
+                <NavBar />
+                <Home />
+              </>
+            }
+          />
+          <Route
+            path='/admin'
+            element={
+              <>
+                <NavBar />
+                <Admin />
+              </>
+            }
+          />
+          <Route
+            path='/products'
+            element={
+              <>
+                <NavBar />
+                <Products />
+              </>
+            }
+          />
+          <Route
+            path='/product/:productId'
+            element={
+              <>
+                <NavBar />
+                <Product />
+              </>
+            }
+          />
+          <Route
+            path='/favorite'
+            element={
+              <>
+                <NavBar />
+                <Favorite />
+              </>
+            }
+          />
+          <Route
+            path='/cart'
+            element={
+              <>
+                <NavBar />
+                <CartPage />
+              </>
+            }
+          />
+          <Route
+            path='/Billing/:totalPrice'
+            element={
+              <>
+                <NavBar />
+                <Billing />
+              </>
+            }
+          />
           <Route path='*' element={<NotFoundPage />} />
         </Route>
       </Routes>

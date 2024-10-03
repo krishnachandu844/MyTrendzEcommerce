@@ -6,6 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/cartContext";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { ShoppingCart, Trash2 } from "lucide-react";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
+import "../App.css";
 
 export default function Products() {
   const token = Cookies.get("token");
@@ -196,8 +204,8 @@ export default function Products() {
   }
 
   return (
-    <div className='bg-container bg-gray-100'>
-      <div className='products-container mx-auto py-2'>
+    <div className='bg-container'>
+      <div className='w-custom mx-auto py-2'>
         <div className='bg-white h-32 flex items-center products-container mx-auto rounded-lg'>
           <div className=' flex  justify-center products-container mx-auto p-6 mt-2'>
             <button
@@ -250,8 +258,41 @@ export default function Products() {
           </div>
         </div>
         {/* flipkart products */}
-        <div className='fkart-items-container grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-2'>
-          {products &&
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 m-10 gap-2'>
+          {products.map((product) => (
+            <div key={product._id} className=''>
+              <div className='product-card p-4 h-auto space-y-6'>
+                <HoverCard>
+                  <HoverCardTrigger className='relative'>
+                    <div className='h-52'>
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        className='w-full h-full object-contain'
+                      />
+                    </div>
+                  </HoverCardTrigger>
+                  <HoverCardContent className='absolute -top-56 -left-20 w-40 h-28  bg-inherit border-none  flex items-center justify-center mb-2'>
+                    <Button className='rounded-lg px-4 py-2' variant='outline'>
+                      <ShoppingCart className='mr-2' /> Cart
+                    </Button>
+                  </HoverCardContent>
+                </HoverCard>
+                <div>
+                  <p className='font-bold w-52 h-12 line-clamp-2 overflow-hidden'>
+                    {product.title}
+                  </p>
+                </div>
+                <div>
+                  <h1 className='text-homePrimary font-bold'>
+                    Rs.{product.price}
+                  </h1>
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {/* {products &&
             products.map((product) => (
               <div key={product._id}>
                 <Card className='h-full'>
@@ -288,7 +329,7 @@ export default function Products() {
                   </CardContent>
                 </Card>
               </div>
-            ))}
+            ))} */}
         </div>
       </div>
     </div>
