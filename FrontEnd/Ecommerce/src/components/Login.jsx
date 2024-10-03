@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 import { toast } from "react-toastify";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import { Input } from "@/components/ui/input";
@@ -13,10 +13,9 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import loginBg from "../../assets/loginBg.jpg";
 
 export default function Login() {
-  const navigate = useNavigate();
-
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
 
@@ -73,11 +72,20 @@ export default function Login() {
   };
 
   return (
-    <div className='flex justify-center items-center h-dvh  login-container'>
+    <div
+      style={{
+        backgroundImage: `url(${loginBg})`,
+        height: "100vh",
+        backgroundSize: "cover",
+      }}
+      className='flex justify-center items-center'
+    >
       <Card className='shadow-md'>
         <CardHeader className='text-center space-y-2 '>
-          <CardTitle className='text-3xl'>Login to your account</CardTitle>
-          <CardDescription>
+          <CardTitle className='text-3xl font-medium'>
+            Login to your account
+          </CardTitle>
+          <CardDescription className='text-sm mt-2'>
             Enter your email and password to access your account
           </CardDescription>
         </CardHeader>
@@ -140,16 +148,17 @@ export default function Login() {
               )}
             </div>
           </div>
-          <div className='mt-10'>
+
+          <div className='mt-4'>
             <Button
               className='sign-up-button w-full h-10 rounded-md'
               onClick={onClickLogin}
             >
-              Login
+              Log in
             </Button>
           </div>
-          <p className='mt-4 text-center'>
-            Don't have an account ?{" "}
+          <p className='mt-3 text-center text-sm'>
+            Don't have an account?
             <a href='/' className='hover:font-bold'>
               signup
             </a>

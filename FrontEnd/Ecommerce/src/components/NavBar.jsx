@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { FaSearch } from "react-icons/fa";
+import { Button } from "@/components/ui/button";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -121,9 +122,9 @@ export default function NavBar() {
               <div className='flex items-center relative'>
                 <input
                   type='text'
-                  className='w-96 h-10  bg-gray-200 focus:bg-transparent rounded-md'
+                  className='w-96 h-10  bg-gray-200 focus:bg-transparent rounded-lg p-2'
                   onKeyDown={searchItems}
-                  placeholder='Search Items'
+                  placeholder=' search products...'
                 />
                 <FaSearch className='h-10 text-xl absolute right-3' />
               </div>
@@ -198,7 +199,7 @@ export default function NavBar() {
                   </AvatarFallback>
                 </Avatar> */}
               </div>
-              <button
+              <Button
                 className='sign-up-button w-24 h-7  rounded-md'
                 onClick={() => {
                   Cookies.remove("token");
@@ -206,7 +207,7 @@ export default function NavBar() {
                 }}
               >
                 Log out
-              </button>
+              </Button>
             </div>
           </div>
         ) : (

@@ -1,19 +1,12 @@
 import { useState } from "react";
 import Cookies from "js-cookie";
+import Rectangle from "../../assets/Rectangle.jpg";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { MdOutlineVisibilityOff, MdOutlineVisibility } from "react-icons/md";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-
 import "../App.css";
 
 export default function Signup() {
@@ -82,21 +75,21 @@ export default function Signup() {
   };
 
   return (
-    <div className='flex justify-center items-center h-screen sign-up-container'>
-      <Card className='w-2/6 h-auto'>
-        <CardHeader className='text-center space-y-2'>
-          <CardTitle className='text-3xl'>Create an account</CardTitle>
-          <CardDescription>Enter your details to get started</CardDescription>
-        </CardHeader>
-        <CardContent>
+    <div className='flex w-screen h-screen'>
+      <div className='w-1/2'>
+        <img src={Rectangle} alt='' className='w-full h-full object-cover' />
+      </div>
+
+      <div className=' flex flex-col items-center justify-center w-1/2 bg-white'>
+        <h1 className='text-3xl font-medium'>Create an Account</h1>
+
+        <div className='w-96 mt-8'>
           <div className='space-y-2'>
-            <Label htmlFor='name' className='heading-text-color font-medium'>
-              Name
-            </Label>
+            <Label htmlFor='username'>Username</Label>
             <Input
               type='text'
-              name=''
-              id='name'
+              id='username'
+              className='w-full'
               placeholder='John Doe'
               value={username}
               onChange={(e) => {
@@ -108,15 +101,12 @@ export default function Signup() {
               <p className='text-red-500 font-bold text-sm'>*Required</p>
             )}
           </div>
-          <br />
-          <div className='space-y-2'>
-            <Label htmlFor='email' className='heading-text-color font-medium'>
-              Email
-            </Label>
+          <div className='space-y-2 mt-4'>
+            <Label htmlFor='Email'>Email address</Label>
             <Input
-              type='email'
-              name=''
-              id='email'
+              type='text'
+              id='Email'
+              className='w-full'
               placeholder='m@Example.com'
               value={email}
               onChange={(e) => {
@@ -128,18 +118,12 @@ export default function Signup() {
               <p className='text-red-500 font-bold text-sm'>*Required</p>
             )}
           </div>
-          <br />
-          <div className='space-y-2 relative'>
-            <Label
-              htmlFor='password'
-              className='heading-text-color font-medium '
-            >
-              Password
-            </Label>
+          <div className='space-y-2 mt-4 relative'>
+            <Label htmlFor='Password'>Password</Label>
             <Input
               type={passwordVisible ? "text" : "password"}
-              name=''
-              id='password'
+              id='Password'
+              className='w-full'
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
@@ -164,22 +148,24 @@ export default function Signup() {
               <p className='text-red-500 font-bold text-sm'>*Required</p>
             )}
           </div>
-          <div className='mt-10'>
-            <Button
-              className='sign-up-button w-full h-10 rounded-md'
-              onClick={onClickSignUp}
-            >
-              Create Account
-            </Button>
-          </div>
-          <p className='mt-4 text-center'>
-            Already have an account ?{" "}
-            <a href='/login' className='hover:font-bold'>
-              Login
-            </a>
-          </p>
-        </CardContent>
-      </Card>
+        </div>
+        <p className='text-sm my-4'>
+          Already have an account?
+          <span
+            className='font-medium text-black hover:font-bold cursor-pointer'
+            onClick={() => {
+              navigate("/login");
+            }}
+          >
+            Login
+          </span>
+        </p>
+        <div className='mt-5 w-96'>
+          <Button className='w-full' onClick={onClickSignUp}>
+            Create an account
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

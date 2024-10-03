@@ -90,129 +90,163 @@ export default function Home() {
       </div>
 
       {/* products section */}
-      <h3 className='text-homePrimary font-bold text-4xl my-6 ml-6'>
-        Today Deals
-      </h3>
-      <div className='p-6 flex gap-6'>
-        <Card className='shadow-lg w-96 flex flex-col items-center'>
-          <CardHeader>
-            <CardTitle>
-              <div className=' rounded-md h-56 w-full'>
-                <img
-                  src='https://rukminim2.flixcart.com/image/612/612/jwgple80/watch/p/y/f/bq1126-fossil-original-imafh4ybgqgehxez.jpeg?q=70'
-                  alt=''
-                  className=' w-full h-full object-contain'
-                />
+      <div className='h-auto'>
+        <h3 className='text-homePrimary font-bold text-4xl my-6 ml-6'>
+          Today Deals
+        </h3>
+        <div className='p-6 flex gap-6'>
+          <Card className='shadow-lg w-96 flex flex-col items-center'>
+            <CardHeader>
+              <CardTitle>
+                <div className=' rounded-md h-56 w-full'>
+                  <img
+                    src='https://rukminim2.flixcart.com/image/612/612/jwgple80/watch/p/y/f/bq1126-fossil-original-imafh4ybgqgehxez.jpeg?q=70'
+                    alt=''
+                    className=' w-full h-full object-contain'
+                  />
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='space-y-4'>
+              <div className=' h-32'>
+                <p className='text-homePrimary font-bold text-xl '>
+                  Flynn Analog Watch
+                </p>
+                <p className='text-black font-medium'>
+                  This is a genuine Fossil product. The product comes with a
+                  standard brand warranty of 2 Years.
+                </p>
               </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className='space-y-4'>
-            <div className=' h-32'>
-              <p className='text-homePrimary font-bold text-xl '>
-                Flynn Analog Watch
-              </p>
-              <p className='text-black font-medium'>
-                This is a genuine Fossil product. The product comes with a
-                standard brand warranty of 2 Years.
-              </p>
-            </div>
-            <div className='flex justify-between items-center'>
-              <p className='text-homePrimary font-bold'>Rs.5,689</p>
-              <Button className='bg-homePrimary'>Buy Now</Button>
-            </div>
-          </CardContent>
-        </Card>
-        {/* Card-2 */}
-        <Card className='shadow-lg w-96 flex flex-col items-center'>
-          <CardHeader>
-            <CardTitle>
-              <div className=' rounded-md h-56 w-full'>
-                <img
-                  src='https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/c/v/p/-original-imah4jyfcjgcghqs.jpeg?q=70'
-                  alt=''
-                  className=' w-full h-full object-contain'
-                />
+              <div className='flex justify-between items-center'>
+                <p className='text-homePrimary font-bold'>Rs.5,689</p>
+                <Button className='bg-homePrimary'>Buy Now</Button>
               </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className='space-y-4'>
-            <div className=' h-32'>
-              <p className='text-homePrimary font-bold text-xl '>
-                Apple iPhone 16 (Pink, 128 GB)
-              </p>
-              <p className='text-black font-medium line-clamp-3'>
-                The iPhone 16 introduces a new Camera Control button that
-                enhances photo and video settings with customizable gestures.
-              </p>
-            </div>
-            <div className='flex justify-between items-center'>
-              <p className='text-homePrimary font-bold'>Rs.79,900</p>
-              <Button className='bg-homePrimary'>Buy Now</Button>
-            </div>
-          </CardContent>
-        </Card>
-        {/* Card-3 */}
-        <Card className='shadow-lg w-96 flex flex-col items-center'>
-          <CardHeader>
-            <CardTitle>
-              <div className=' rounded-md h-56 w-full'>
-                <img
-                  src='https://rukminim2.flixcart.com/image/312/312/xif0q/television/i/8/0/-original-imah2dzwa44rbqds.jpeg?q=70'
-                  alt=''
-                  className=' w-full h-full object-contain'
-                />
+            </CardContent>
+          </Card>
+          {/* Card-2 */}
+          <Card className='shadow-lg w-96 flex flex-col items-center'>
+            <CardHeader>
+              <CardTitle>
+                <div className=' rounded-md h-56 w-full'>
+                  <img
+                    src='https://rukminim2.flixcart.com/image/312/312/xif0q/mobile/c/v/p/-original-imah4jyfcjgcghqs.jpeg?q=70'
+                    alt=''
+                    className=' w-full h-full object-contain'
+                  />
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='space-y-4'>
+              <div className=' h-32'>
+                <p className='text-homePrimary font-bold text-xl '>
+                  Apple iPhone 16 (Pink, 128 GB)
+                </p>
+                <p className='text-black font-medium line-clamp-3'>
+                  The iPhone 16 introduces a new Camera Control button that
+                  enhances photo and video settings with customizable gestures.
+                </p>
               </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className='space-y-4'>
-            <div className=' h-32'>
-              <p className='text-homePrimary font-bold text-xl '>
-                SONY Bravia 2 125.7 cm (50 inch) Ultra HD (4K)
-              </p>
-              <p className='text-black font-medium line-clamp-3'>
-                This Sony Bravia Ultra HD 4K TV is integrated with Google TV
-                offering you endless entertainment all through the day.
-              </p>
-            </div>
-            <div className='flex justify-between items-center'>
-              <p className='text-homePrimary font-bold'>Rs.53,990</p>
-              <Button className='bg-homePrimary'>Buy Now</Button>
-            </div>
-          </CardContent>
-        </Card>
-        {/* Card-4 */}
-        <Card className='shadow-lg w-96 flex flex-col items-center'>
-          <CardHeader>
-            <CardTitle>
-              <div className=' rounded-md h-56 w-full'>
-                <img
-                  src='https://rukminim2.flixcart.com/image/312/312/xif0q/computer/k/2/u/-original-imah3zzjkjwumecn.jpeg?q=70'
-                  alt=''
-                  className=' w-full h-full object-contain'
-                />
+              <div className='flex justify-between items-center'>
+                <p className='text-homePrimary font-bold'>Rs.79,900</p>
+                <Button className='bg-homePrimary'>Buy Now</Button>
               </div>
-            </CardTitle>
-          </CardHeader>
-          <CardContent className='space-y-4'>
-            <div className=' h-32'>
-              <p className='text-homePrimary font-bold text-xl '>
-                Acer Aspire 7 Intel Core i5 13th Gen 13420H
-              </p>
-              <p className='text-black font-medium'>
-                The Acer Aspire 7 gaming laptop combines powerful performance
-                with sleek portability.
-              </p>
-            </div>
-            <div className='flex justify-between items-center'>
-              <p className='text-homePrimary font-bold'>Rs.57,990</p>
-              <Button className='bg-homePrimary'>Buy Now</Button>
-            </div>
-          </CardContent>
-        </Card>
+            </CardContent>
+          </Card>
+          {/* Card-3 */}
+          <Card className='shadow-lg w-96 flex flex-col items-center'>
+            <CardHeader>
+              <CardTitle>
+                <div className=' rounded-md h-56 w-full'>
+                  <img
+                    src='https://rukminim2.flixcart.com/image/312/312/xif0q/television/i/8/0/-original-imah2dzwa44rbqds.jpeg?q=70'
+                    alt=''
+                    className=' w-full h-full object-contain'
+                  />
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='space-y-4'>
+              <div className=' h-32'>
+                <p className='text-homePrimary font-bold text-xl '>
+                  SONY Bravia 2 125.7 cm (50 inch) Ultra HD (4K)
+                </p>
+                <p className='text-black font-medium line-clamp-3'>
+                  This Sony Bravia Ultra HD 4K TV is integrated with Google TV
+                  offering you endless entertainment all through the day.
+                </p>
+              </div>
+              <div className='flex justify-between items-center'>
+                <p className='text-homePrimary font-bold'>Rs.53,990</p>
+                <Button className='bg-homePrimary'>Buy Now</Button>
+              </div>
+            </CardContent>
+          </Card>
+          {/* Card-4 */}
+          <Card className='shadow-lg w-96 flex flex-col items-center'>
+            <CardHeader>
+              <CardTitle>
+                <div className=' rounded-md h-56 w-full'>
+                  <img
+                    src='https://rukminim2.flixcart.com/image/312/312/xif0q/computer/k/2/u/-original-imah3zzjkjwumecn.jpeg?q=70'
+                    alt=''
+                    className=' w-full h-full object-contain'
+                  />
+                </div>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className='space-y-4'>
+              <div className=' h-32'>
+                <p className='text-homePrimary font-bold text-xl '>
+                  Acer Aspire 7 Intel Core i5 13th Gen 13420H
+                </p>
+                <p className='text-black font-medium'>
+                  The Acer Aspire 7 gaming laptop combines powerful performance
+                  with sleek portability.
+                </p>
+              </div>
+              <div className='flex justify-between items-center'>
+                <p className='text-homePrimary font-bold'>Rs.57,990</p>
+                <Button className='bg-homePrimary'>Buy Now</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/** Feature Brands */}
+
+        <h3 className='text-homePrimary font-bold text-4xl my-6 ml-6'>
+          Featured Brands
+        </h3>
+        <div className='flex gap-4 p-4 h-96'>
+          <div>
+            <img
+              src='https://rukminim2.flixcart.com/fk-p-flap/450/280/image/935d8f0319677e1f.jpeg?q=20'
+              alt=''
+            />
+          </div>
+          <div>
+            <img
+              src='https://rukminim2.flixcart.com/fk-p-flap/450/280/image/bf686dbb1fa860c2.jpeg?q=20'
+              alt=''
+            />
+          </div>
+          <div>
+            <img
+              src='https://rukminim2.flixcart.com/fk-p-flap/450/280/image/dfb9097f8ee066af.jpeg?q=20'
+              alt=''
+            />
+          </div>
+          <div>
+            <img
+              src='https://rukminim2.flixcart.com/fk-p-flap/450/280/image/70c391b99dc5a210.jpeg?q=20'
+              alt=''
+            />
+          </div>
+        </div>
       </div>
 
       {/* about section */}
-      <section className='w-full py-12 md:py-24 lg:py-32 h-screen flex flex-col items-center justify-center'>
+      <section className='w-full py-12  h-screen flex flex-col items-center justify-center bg-red-200'>
         <div className='container px-4 md:px-6'>
           <div className='grid gap-6 items-center'>
             <div className='flex flex-col justify-center space-y-8 text-center'>
@@ -220,7 +254,7 @@ export default function Home() {
                 <h2 className='text-3xl font-bold tracking-tighter sm:text-5xl'>
                   About MyStore
                 </h2>
-                <p className='max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400 mx-auto'>
+                <p className='max-w-[600px] text-500 text-red-500 font-bold text-xl mx-auto'>
                   We're passionate about delivering quality products and
                   exceptional customer experiences.
                 </p>
@@ -245,8 +279,8 @@ export default function Home() {
       </section>
 
       {/* footer secion */}
-      <footer className='w-full border-t bg-background'>
-        <div className=' flex flex-col items-center justify-between space-y-4 py-10 md:h-16 md:flex-row md:py-0'>
+      <footer className='w-full border-t bg-homePrimary text-white h-28 '>
+        <div className=' flex flex-col items-center justify-between space-y-4 py-10 md:h-16 md:flex-row md:py-0 mt-5'>
           <div className='flex flex-col items-center space-y-4 md:flex-row md:space-y-0 md:space-x-4'>
             <a href='/'>Terms of Service</a>
             <a href='/'>Privacy Policy</a>
@@ -279,7 +313,7 @@ export default function Home() {
               </svg>
             </a>
           </div>
-          <p className='text-sm text-gray-500 dark:text-gray-400'>
+          <p className='text-sm text-white'>
             © {new Date().getFullYear()} MyTrends. All rights reserved.
           </p>
         </div>

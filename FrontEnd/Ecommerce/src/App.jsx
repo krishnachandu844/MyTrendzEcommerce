@@ -17,21 +17,18 @@ import Favorite from "./components/Favorite";
 import Home from "./components/Home";
 
 import Admin from "./components/Admin";
-import SignUpDup from "./components/SignUpDup";
-import LoginDup from "./components/LoginDup";
 
 function App() {
   return (
     <BrowserRouter>
-      <NavBar />
+      {/* <NavBar /> */}
       <ScrollToTop />
       <Routes>
         <Route path='/' element={<Signup />} />
         <Route path='/login' element={<Login />} />
-        <Route path='/signupDup' element={<SignUpDup />} />
-        <Route path='/loginDup' element={<LoginDup />} />
-        <Route path='/home' element={<Home />} />
+
         <Route element={<ProtectedRoute />}>
+          <Route path='/home' element={<Home />} />
           <Route path='/admin' element={<Admin />} />
           <Route path='/products' element={<Products />} />
           <Route path='/product/:productId' element={<Product />} />
