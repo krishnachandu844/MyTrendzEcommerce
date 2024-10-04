@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { CartContext } from "../context/cartContext";
 import { ShoppingCart } from "lucide-react";
+import { Input } from "@/components/ui/input";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -120,9 +121,9 @@ export default function NavBar() {
             </div>
             <div className='flex items-center gap-7 '>
               <div className='flex items-center relative'>
-                <input
+                <Input
                   type='text'
-                  className='w-96 h-10  bg-gray-200 focus:bg-transparent rounded-lg p-2'
+                  className='w-96 h-10  rounded-lg p-2'
                   onKeyDown={searchItems}
                   placeholder=' search products...'
                 />
@@ -159,10 +160,7 @@ export default function NavBar() {
               <a href='/cart' className='font-semibold relative'>
                 <ShoppingCart className='h-6 w-7 text-black' />
                 {cartItems && cartItems.length > 0 && (
-                  <Badge
-                    variant='destructive'
-                    className='absolute -top-2 -right-4 px-2 py-1 text-xs'
-                  >
+                  <Badge className='absolute -top-2 -right-4 px-2 py-1 text-xs bg-homePrimary hover:bg-homePrimary'>
                     {cartItems.length}
                   </Badge>
                 )}
@@ -171,7 +169,7 @@ export default function NavBar() {
                 <DropdownMenu>
                   <DropdownMenuTrigger className='flex items-center'>
                     <Avatar>
-                      <AvatarFallback className='bg-red-500 text-white'>
+                      <AvatarFallback className='bg-homePrimary text-white'>
                         {username.charAt(0)}
                       </AvatarFallback>
                     </Avatar>

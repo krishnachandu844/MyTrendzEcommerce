@@ -1,5 +1,6 @@
 import { useEffect, useState, useContext } from "react";
 import { ShoppingCart, Trash2 } from "lucide-react";
+import { IoCloseOutline } from "react-icons/io5";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
 import { CartContext } from "../context/cartContext";
@@ -108,7 +109,6 @@ export default function Favorite() {
   };
 
   //Deleting the favorite Item
-
   const deleteFavoriteItem = async (id) => {
     const res = await fetch(
       `${import.meta.env.VITE_FRONT_END_URL}/favorite/deleteFavoriteItems/` +
@@ -153,12 +153,15 @@ export default function Favorite() {
 
   return favoriteItems && favoriteItems.length !== 0 ? (
     <div className='bg-container min-h-screen'>
-      <div className='products-container mx-auto'>
+      <div className='w-custom mx-auto'>
         <h2 className='text-4xl font-bold pt-4 pb-4'>Favorites</h2>
         <div className='product-cards grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
           {favoriteItems &&
             favoriteItems.map((item) => (
-              <div className='card shadow-lg rounded-xl p-8' key={item._id}>
+              <div
+                className='card shadow-lg rounded-xl p-8 relative'
+                key={item._id}
+              >
                 <div className=' w-full h-48 mb-4 flex items-center justify-center overflow-hidden rounded-lg'>
                   <img
                     src={item.image}
@@ -171,23 +174,22 @@ export default function Favorite() {
                     <h2 className='text-xl font-bold mt-2'>{item.title}</h2>
                   </div>
 
-                  <h2 className='text-lg font-extrabold'>Rs. {item.price}</h2>
+                  <h2 className='text-lg font-extrabold text-homePrimary'>
+                    Rs. {item.price}
+                  </h2>
                 </div>
-                <div className='w-full mt-2 mb-1 flex justify-between space-x-6 '>
+                <div className=' mt-2 mb-1 flex justify-between space-x-6 '>
                   <Button
                     variant='outline'
-                    size='icon'
-                    aria-label='Remove from favorites'
-                    className='  flex justify-center text-xl w-full'
+                    className='flex justify-center absolute inset-0 w-16  mt-2 left-80 rounded-full border-none'
                     onClick={() => {
                       deleteFavoriteItem(item._id);
                     }}
                   >
-                    <Trash2 className='h-7 w-7' />
-                    <p className='pt-1 pl-2'>Delete</p>
+                    <IoCloseOutline className='h-6 w-6' />
                   </Button>
                   <Button
-                    className=' flex items-center justify-center'
+                    className=' flex items-center justify-center bg-homePrimary text-white hover:text-white hover:bg-homePrimary'
                     onClick={() => {
                       onClickToAddCart(
                         item.productId,
@@ -214,13 +216,13 @@ export default function Favorite() {
           Your Favorites are empty
         </h1>
         <p className='mt-4'>
-          Looks like you haven't added anything to your cart yet. Let's change
-          that!
+          Looks like you haven't added anything to your products yet. Let's
+          change that!
         </p>
         <div className='mt-6'>
           <Link
             to='/products'
-            className='inline-flex items-center rounded-md  px-4 py-2 text-sm font-medium  shadow-sm transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 bg-black text-white'
+            className='inline-flex items-center rounded-md  px-4 py-2 text-sm font-medium   bg-homePrimary text-white'
           >
             Continue Shopping
           </Link>

@@ -5,43 +5,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { CartContext } from "../context/cartContext";
+import "../App.css";
 
 export default function Billing() {
-  // const [cartProducts, setCartProducts] = useState();
   const { cartItems } = useContext(CartContext);
   const { totalPrice } = useParams();
 
   const [responseId, setResponseId] = useState("");
-  const token = Cookies.get("token");
-
-  //getting cart items
-  const init = async () => {
-    let res = await fetch("http://localhost:3000/cart/cartItems", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    if (res.ok === true) {
-      const data = await res.json();
-      setCartProducts(data.cart);
-    }
-  };
-
-  useEffect(() => {
-    init();
-  });
-
   //loadScript
   const loadScript = (src) => {
     return new Promise((resolve) => {
@@ -112,129 +84,91 @@ export default function Billing() {
   };
 
   return (
-    <div className='flex justify-center billing-container min-h-screen'>
-      <div className=' w-4/5 shadow-xl bg-white mt-11 rounded-xl p-6 h-fit'>
-        <div>
-          <h2 className='text-3xl font-extrabold'>Billing</h2>
-          <p className='mt-1'>
-            Review your order and complete the transaction.
-          </p>
-          <div className='flex'>
-            {/* order section */}
-            <div className='order-summary-container mt-8 mb-8 rounded-lg p-4 w-1/2'>
-              <h2 className='text-3xl font-extrabold'>Order Summary</h2>
-
-              <div className='max-h-80 overflow-y-scroll'>
-                {cartItems &&
-                  cartItems.map((product) => (
-                    <div key={product.productId} className='w-full'>
-                      <div className='flex justify-between  m-4'>
-                        <div className='w-4/5'>
-                          <h3 className='font-bold'>{product.title}</h3>
-                        </div>
-                        <div className=''>
-                          <h3 className='font-bold'>
-                            Rs.{parseFloat(product.price)}
-                          </h3>
-                          <p>Quantity: {product.quantity}</p>
-                        </div>
-                      </div>
-                      <hr />
-                    </div>
-                  ))}
-              </div>
-              <div className='w-full '>
-                <div className='flex justify-between py-2 w-4/5 mx-auto'>
-                  <h2>SubTotal</h2>
-                  <h2>Rs.{totalPrice}</h2>
-                </div>
-                <div className='flex justify-between py-2 w-4/5 mx-auto'>
-                  <h2>Shipping</h2>
-                  <h2>Rs.25.00</h2>
-                </div>
-                <div className='flex justify-between py-2 w-4/5 mx-auto'>
-                  <h2>Tax</h2>
-                  <h2>Rs.17.00</h2>
-                </div>
-              </div>
-              <hr />
-              <div className='flex justify-between w-4/5 mx-auto my-2'>
-                <h2 className='font-extrabold text-xl'>Total</h2>
-                <h2 className='font-extrabold text-xl'>
-                  Rs.{parseFloat(totalPrice) + 25.0 + 17.0}
-                </h2>
-              </div>
+    <div className='w-custom mx-auto pt-4 flex gap-2'>
+      <div className='billing-container p-4'>
+        <h1 className='text-2xl font-bold'>Billing Information</h1>
+        <div className='username-container space-y-2 mt-2'>
+          <div className='space-y-2'>
+            <Label>Username</Label>
+            <div className='flex gap-2'>
+              <Input type='text' placeholder='First name'></Input>
+              <Input type='text' placeholder='Last name'></Input>
             </div>
-            {/* billing address */}
-            <div className='order-summary-container mt-8 mb-8 rounded-lg p-4 w-1/2 ml-5'>
-              <h2 className='text-3xl font-extrabold'>Billing Information</h2>
-              <div className='py-14'>
-                <div className='grid gap-2'>
-                  <Label htmlFor='name' className='font-bold'>
-                    Name
-                  </Label>
-                  <Input
-                    type='text'
-                    name=''
-                    id='name'
-                    placeholder='Enter Your Name'
-                    className='rounded-lg text-xl p-2 '
-                  />
-                </div>
-                <br />
-                <div className='grid gap-2'>
-                  <Label htmlFor='address' className='font-bold'>
-                    Address
-                  </Label>
-                  <Textarea
-                    name=''
-                    id='address'
-                    placeholder='Enter Your Address'
-                    className='rounded-lg p-2'
-                    cols={40}
-                    rows={5}
-                  ></Textarea>
-                </div>
-                <div className='grid gap-2 mt-10'>
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                        variant='default'
-                        size='lg'
-                        className='w-full bg-red-500 hover:bg-red-600 text-white'
-                      >
-                        Place Order
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent className='sm:max-w-[425px]'>
-                      <DialogHeader>
-                        <DialogTitle className='text-xl'>
-                          Proceed to Payment
-                        </DialogTitle>
-                        <DialogDescription className='text-black'>
-                          <span className='block py-6 text-center text-2xl font-bold'>
-                            Total: {parseFloat(totalPrice)}
-                          </span>
+          </div>
+          <div className='space-y-2'>
+            <Label htmlFor='address' className=''>
+              Address
+            </Label>
 
-                          <Button
-                            className='w-full'
-                            onClick={() => {
-                              createRazorpay(
-                                parseFloat(totalPrice) + 25.0 + 17.0
-                              );
-                            }}
-                          >
-                            Pay Now
-                          </Button>
-                        </DialogDescription>
-                      </DialogHeader>
-                    </DialogContent>
-                  </Dialog>
-                </div>
-              </div>
+            <Textarea
+              name=''
+              id='address'
+              placeholder='Enter Your Address'
+              className='rounded-lg p-2'
+              cols={40}
+              rows={5}
+            ></Textarea>
+          </div>
+          <div className=' flex gap-2 w-full'>
+            <div className='w-1/2'>
+              <Label>Email</Label>
+              <Input type='email'></Input>
+            </div>
+            <div className=' w-1/2'>
+              <Label>Phone Number</Label>
+              <Input type='text'></Input>
             </div>
           </div>
         </div>
+      </div>
+      {/* /**Total Cart */}
+      <div className='total-price-cart-card p-4'>
+        <h1 className='font-bold text-3xl pl-3'>Total</h1>
+        <div className='overflow-y-auto'>
+          {cartItems.map((cart) => (
+            <div className='w-full h-24 flex items-center gap-2'>
+              <div className='h-44'>
+                <img
+                  src={cart.image}
+                  className='w-full h-full object-contain'
+                />
+              </div>
+
+              <h1 className='h-6 overflow-hidden'>{cart.title}</h1>
+            </div>
+          ))}
+        </div>
+        <div className='w-full h-auto p-4 space-y-2'>
+          <div className='flex justify-between'>
+            <p className='font-medium text-gray-500'>Sub Total</p>
+            <p className='font-medium'>Rs.{totalPrice}</p>
+          </div>
+          <div className='flex justify-between'>
+            <p className='font-medium text-gray-500'>Shipping</p>
+            <p className='font-medium'>Free</p>
+          </div>
+          <div className='flex justify-between'>
+            <p className='font-medium text-gray-500'>Discount</p>
+            <p className='font-medium'> Rs.72</p>
+          </div>
+          <div className='flex justify-between'>
+            <p className='font-medium text-gray-500'> Tax</p>
+            <p className='font-medium'> Rs.720</p>
+          </div>
+        </div>
+        <hr />
+        <div className='flex justify-between my-2 px-4'>
+          <p className='font-extrabold'>Total</p>
+          <p className='font-extrabold'>Rs.{parseInt(totalPrice) + 720}</p>
+        </div>
+        <Button
+          className='w-full mt-5 bg-btnColor hover:bg-btnColor'
+          onClick={() => {
+            createRazorpay(parseInt(totalPrice) + 720);
+          }}
+        >
+          PLACE ORDER
+        </Button>
       </div>
     </div>
   );

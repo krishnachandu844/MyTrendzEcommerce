@@ -13,8 +13,10 @@ export default {
       width: {
         custom: "1200px",
       },
+
       colors: {
         homePrimary: "#F83737",
+        btnColor: "#FA8232",
 
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
@@ -57,6 +59,11 @@ export default {
           5: "hsl(var(--chart-5))",
         },
       },
+    },
+  },
+  variants: {
+    extend: {
+      opacity: ["group-hover"],
     },
   },
   plugins: [require("tailwindcss-animate")],

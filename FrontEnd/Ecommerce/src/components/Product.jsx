@@ -1,14 +1,14 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
-
+import { Button } from "@/components/ui/button";
 import { TailSpin } from "react-loader-spinner";
 import { toast } from "react-toastify";
 import { CartContext } from "../context/cartContext";
-
+import "../App.css";
 export default function Product() {
   const { productId } = useParams();
   const { cartItems, setCartItems, token } = useContext(CartContext);
-  const [favoriteItems, setFavoriteItems] = useState();
+  const [favoriteItems, setFavoriteItems] = useState([]);
 
   const [product, setProduct] = useState();
 
@@ -204,33 +204,36 @@ export default function Product() {
   }, []);
 
   return product ? (
-    <div className='bg-container bg-gray-200 min-h-screen'>
-      <div className='product-container mx-auto'>
+    <div className='bg-container bg-white min-h-screen'>
+      <div className='w-custom mx-auto p-2'>
         {/* //product section // */}
         {product && (
-          <div className='p-4 flex flex-1'>
-            <div className='image-container bg-color rounded-lg w-1/2 h-96 flex items-center justify-center overflow-hidden p-2 shadow-lg'>
-              <img
-                src={product.image}
-                alt={product.title}
-                className='w-full h-full object-contain'
-              />
+          <div className='flex'>
+            <div className='single-product-card flex gap-4'>
+              <div className='single-product-image p-4'>
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className='w-full h-full object-contain'
+                />
+              </div>
             </div>
-            <div className='product-desc-container ml-2 w-1/2 h-96 '>
-              <h1 className='title  w-full ml-2 my-1 text-3xl font-extrabold line-clamp-1'>
+            <div className='single-product-description-container m-2 p-4 space-y-4 w-full'>
+              <h1 className='text-2xl h-8 overflow-hidden line-clamp-1 font-bold'>
                 {product.title}
               </h1>
-              <h1 className='ml-2 my-1 text-2xl h-10'>Rs.{product.price}</h1>
-              <div className='flex ml-2'>
-                <p className='mt-1 mr-8 font-bold'>Description:</p>
-                <p className='description w-full  h-60 text-lg text-gray-500 font-sans italic line-clamp-4 overflow-y-auto'>
+              <h1 className='text-xl text-homePrimary font-bold'>
+                Rs.{product.price}
+              </h1>
+              <div className='flex gap-3 h-72 overflow-hidden'>
+                <h1 className='font-bold'>Description:</h1>
+                <div className='text-balance italic text-gray-500'>
                   {product.description}
-                </p>
+                </div>
               </div>
-
-              <div className=' flex w-full mt-3'>
-                <button
-                  className='sign-up-button w-full h-10 rounded-md'
+              <div className='buttons-container'>
+                <Button
+                  className='w-5/12 mr-2 bg-homePrimary text-white hover:text-white hover:bg-homePrimary'
                   onClick={() => {
                     onClickToAddCart(
                       product.productId,
@@ -240,10 +243,11 @@ export default function Product() {
                     );
                   }}
                 >
-                  Add to Cart
-                </button>
-                <button
-                  className='fav-btn w-full h-10 ml-2 rounded-md hover:text-red-400'
+                  ADD TO CART
+                </Button>
+                <Button
+                  className='w-1/2 '
+                  variant='outline'
                   onClick={() => {
                     addFavoriteItems(
                       product.productId,
@@ -253,17 +257,17 @@ export default function Product() {
                     );
                   }}
                 >
-                  Add To Favorites
-                </button>
+                  ADD TO FAVORITES
+                </Button>
               </div>
             </div>
           </div>
         )}
         {/* //comments section // */}
-        <div className='comments-section p-4'>
+        <div className='comments-section w-full'>
           <h1 className='text-3xl font-extrabold'>Comments</h1>
           <textarea
-            className='w-full h-36 mt-5 p-4'
+            className='w-full h-36 mt-5 p-4 bg-gray-100'
             placeholder='Enter Your Comment'
           ></textarea>
         </div>

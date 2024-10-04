@@ -90,7 +90,15 @@ function App() {
               </>
             }
           />
-          <Route path='*' element={<NotFoundPage />} />
+          <Route
+            path='*'
+            element={
+              <>
+                <NavBar />
+                <NotFoundPage />
+              </>
+            }
+          />
         </Route>
       </Routes>
       <ToastContainer />

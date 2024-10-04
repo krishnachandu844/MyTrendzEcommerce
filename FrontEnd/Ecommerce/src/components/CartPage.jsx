@@ -1,11 +1,12 @@
-import { Trash2 } from "lucide-react";
 import { useEffect, useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { TailSpin } from "react-loader-spinner";
 import { CartContext } from "../context/cartContext";
-
+import { Button } from "@/components/ui/button";
+import { CircleX, MoveLeft } from "lucide-react";
 export default function CartPage() {
   const { cartItems, setCartItems, token } = useContext(CartContext);
+
   const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
 
@@ -108,81 +109,116 @@ export default function CartPage() {
         </div>
       </div>
     ) : (
-      <div className='bg-container'>
-        <div className='cart-container mx-auto'>
-          <h1 className='text-4xl pt-3 pb-4 font-bold'>Your Cart</h1>
-          <div className='cart-card space-y-4 min-h-screen'>
+      <div className='w-custom mx-auto p-2 flex gap-2 mt-5'>
+        <div className='shopping-container'>
+          <h1 className='text-4xl pt-3 pb-4 font-bold pl-4'>Shopping Cart</h1>
+          <div className='cart-products w-full  flex h-8 items-center bg-gray-300'>
+            <h1 className='w-4/5 pl-16 font-bold '>PRODUCTS</h1>
+            <h1 className='w-24   text-center font-bold'>PRICE</h1>
+            <h1 className='w-44  text-center font-bold'>QUANTITY</h1>
+          </div>
+          <div className=' overflow-y-auto max-h-52'>
             {cartItems &&
               cartItems.map((cartProduct) => (
-                <div
-                  className='card bg-white shadow-lg w-5/6 h-44 rounded-2xl p-4 flex gap-6'
-                  key={cartProduct._id}
-                >
-                  <div className='cart-image-container rounded-lg '>
-                    <img
-                      src={cartProduct.image}
-                      alt={cartProduct.title}
-                      className='w-full h-full object-contain'
-                    />
-                  </div>
-                  <div className='w-96'>
-                    <h1 className='text-2xl h-3/4 font-bold'>
-                      {cartProduct.title}
-                    </h1>
-                    <h4 className='h-full text-xl'>Rs.{cartProduct.price}</h4>
-                  </div>
-                  <div className='flex gap-6 items-center'>
-                    <div className='hover:bg-slate-200'>
-                      <button
-                        className=' btn'
+                <div className='space-y-6' key={cartProduct._id}>
+                  <div className='flex w-full my-2 h-24'>
+                    <div className='flex w-4/5 items-center justify-center'>
+                      <CircleX
+                        className='pl-4 w-12 h-12 text-red-400 cursor-pointer'
                         onClick={() => {
-                          onDecrement(cartProduct._id);
+                          deleteCart(cartProduct.id, cartProduct._id);
                         }}
-                      >
-                        -
-                      </button>
+                      />
+                      <div className='w-80 h-20 items-center'>
+                        <img
+                          src={cartProduct.image}
+                          className='w-full h-full object-contain'
+                        />
+                      </div>
+                      <h1 className='text-wrap w-full overflow-hidden font-medium'>
+                        {cartProduct.title}
+                      </h1>
                     </div>
-                    <div>{cartProduct.quantity}</div>
-                    <div className='hover:bg-slate-200'>
-                      <button
-                        className='btn'
-                        onClick={() => {
-                          onIncrement(cartProduct._id);
-                        }}
-                      >
-                        +
-                      </button>
+                    {/* price */}
+                    <div className='w-24 text-center flex items-center justify-center'>
+                      <h1 className='text-green-600 font-bold'>
+                        Rs.{cartProduct.price * cartProduct.quantity}
+                      </h1>
                     </div>
-                  </div>
-                  <div className='delete-button flex items-center ml-5'>
-                    <button
-                      className='hover:bg-slate-200 h-12 w-16 pl-5 pb-1 rounded-lg'
-                      onClick={() => {
-                        deleteCart(cartProduct.id, cartProduct._id);
-                      }}
-                    >
-                      <Trash2 />
-                    </button>
+                    {/* quantity */}
+                    <div className='w-44 flex items-center justify-center gap-4'>
+                      <div>
+                        <button
+                          className='bg-slate-300 w-5'
+                          onClick={() => {
+                            onDecrement(cartProduct._id);
+                          }}
+                        >
+                          -
+                        </button>
+                      </div>
+                      <div>{cartProduct.quantity}</div>
+                      <div className='hover:bg-slate-200'>
+                        <button
+                          className='bg-slate-300 w-5'
+                          onClick={() => {
+                            onIncrement(cartProduct._id);
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               ))}
           </div>
-        </div>
-        <div className='total-bill-count bg-white h-44 w-96 shadow-lg rounded-lg p-4 sticky bottom-0 right-0 ml-auto m-10'>
-          <div className='flex justify-between'>
-            <h1 className='text-2xl font-bold'>Total</h1>
-            <h1 className='text-xl'>Rs.{parseFloat(totalPrice.toFixed(2))}</h1>
-          </div>
-          <div className='w-full mt-11'>
-            <button
-              className='sign-up-button w-full h-10 rounded-md'
+          <hr />
+          <div className='ml-8 my-4'>
+            <Button
               onClick={() => {
-                navigate(`/Billing/${parseFloat(totalPrice.toFixed(2))}`);
+                navigate("/home");
               }}
             >
-              Proceed to CheckOut
-            </button>
+              <MoveLeft className='mr-2' />
+              RETURN TO SHOP
+            </Button>
           </div>
+        </div>
+        {/* /**Total Cart */}
+        <div className='total-price-cart-card p-4'>
+          <h1 className='font-bold text-3xl pl-3'>Total</h1>
+          <div className='w-full h-48 p-4 space-y-2'>
+            <div className='flex justify-between'>
+              <p className='font-medium text-gray-500'>Sub Total</p>
+              <p className='font-medium'>Rs.{totalPrice}</p>
+            </div>
+            <div className='flex justify-between'>
+              <p className='font-medium text-gray-500'>Shipping</p>
+              <p className='font-medium'>Free</p>
+            </div>
+            <div className='flex justify-between'>
+              <p className='font-medium text-gray-500'>Discount</p>
+              <p className='font-medium'> Rs.72</p>
+            </div>
+            <div className='flex justify-between'>
+              <p className='font-medium text-gray-500'> Tax</p>
+              <p className='font-medium'> Rs.720</p>
+            </div>
+          </div>
+          <hr />
+          <div className='flex justify-between my-2 px-4'>
+            <p className='font-extrabold'>Total</p>
+            <p className='font-extrabold'>Rs.{totalPrice + 720}</p>
+          </div>
+          <Button
+            className='w-full mt-5 bg-btnColor hover:bg-btnColor'
+            onClick={() => {
+              navigate(`/Billing/${parseFloat(totalPrice.toFixed(2))}`);
+            }}
+          >
+            PROCEED TO CHECKOUT
+          </Button>
         </div>
       </div>
     )

@@ -4,25 +4,95 @@ import { toast } from "react-toastify";
 import { TailSpin } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/cartContext";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { ShoppingCart, Trash2 } from "lucide-react";
-import {
-  HoverCard,
-  HoverCardContent,
-  HoverCardTrigger,
-} from "@/components/ui/hover-card";
+import { GrFavorite } from "react-icons/gr";
+
+import { ShoppingCart } from "lucide-react";
+import { HoverCard, HoverCardTrigger } from "@/components/ui/hover-card";
 
 import "../App.css";
 
 export default function Products() {
   const token = Cookies.get("token");
   const { cartItems, setCartItems } = useContext(CartContext);
-
+  const [favoriteItems, setFavoriteItems] = useState([]);
   const [products, setProducts] = useState([]);
   const [allProducts, setAllProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+
+  // getting favorite items
+  const favorite = async () => {
+    const response = await fetch(
+      `${import.meta.env.VITE_FRONT_END_URL}/favorite/getFavoriteItems`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.ok === true) {
+      const data = await response.json();
+      setFavoriteItems(data);
+    }
+  };
+
+  useEffect(() => {
+    favorite();
+  }, []);
+
+  //adding items to favorite section
+  const addFavoriteItems = async (productId, title, image, price) => {
+    const data = { productId, title, image, price };
+
+    if (favoriteItems && favoriteItems.length > 0) {
+      const isFavPresent = favoriteItems.find(
+        (fav) => fav.productId === productId
+      );
+
+      if (isFavPresent) {
+        toast.error("Already added to favorites", { position: "bottom-right" });
+      } else {
+        //adding if fav item is not present
+        const response = await fetch(
+          `${import.meta.env.VITE_FRONT_END_URL}/favorite/addFavoriteItems`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(data),
+          }
+        );
+        if (response.ok === true) {
+          const data = await response.json();
+          setFavoriteItems((prevFav) => [...prevFav, ...data.newFavoriteItem]);
+          toast.info("Added to favorites", { position: "bottom-right" });
+        }
+      }
+    } else {
+      //Adding if the favorite Items are Empty
+      const response = await fetch(
+        `${import.meta.env.VITE_FRONT_END_URL}/favorite/addFavoriteItems`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(data),
+        }
+      );
+      if (response.ok === true) {
+        const data = await response.json();
+
+        setFavoriteItems([{ ...data.newFavoriteItem }]);
+        toast.info("Added to favorites", { position: "bottom-right" });
+      }
+    }
+  };
 
   //onClicking We go to single product
   const goToProduct = (id) => {
@@ -206,16 +276,12 @@ export default function Products() {
   return (
     <div className='bg-container'>
       <div className='w-custom mx-auto py-2'>
-        <div className='bg-white h-32 flex items-center products-container mx-auto rounded-lg'>
-          <div className=' flex  justify-center products-container mx-auto p-6 mt-2'>
+        <div className='bg-white h-32 flex items-center products-container mx-auto rounded-lg get-category-products'>
+          <div className=' flex  justify-center products-container mx-auto w-96 p-4 mt-2'>
             <button
-              className='mx-14 w-28 rounded-md flex flex-col items-center'
+              className='mx-14 mt-5 w-28 rounded-md flex flex-col items-center'
               onClick={onClickGetAllProducts}
             >
-              <img
-                src='https://files.oaiusercontent.com/file-M6iPgj9pmgzdbdhuS7a3r5MD?se=2024-09-28T09%3A28%3A11Z&sp=r&sv=2024-08-04&sr=b&rscc=max-age%3D604800%2C%20immutable%2C%20private&rscd=attachment%3B%20filename%3D3a54e595-b147-4145-96bb-66ca805b2793.webp&sig=063ZRegwwjAGqa3zgs3jOTY6yMjxrnDlscaP22HoPfA%3D'
-                className='h-20 rounded-md'
-              />
               All Products
             </button>
             <button className='mx-14' onClick={onClickGetElectronics}>
@@ -263,7 +329,7 @@ export default function Products() {
             <div key={product._id} className=''>
               <div className='product-card p-4 h-auto space-y-6'>
                 <HoverCard>
-                  <HoverCardTrigger className='relative'>
+                  <HoverCardTrigger className='relative group'>
                     <div className='h-52'>
                       <img
                         src={product.image}
@@ -271,15 +337,47 @@ export default function Products() {
                         className='w-full h-full object-contain'
                       />
                     </div>
+
+                    <div className='absolute inset-0 flex items-center justify-center space-x-4 opacity-0 group-hover:opacity-100 bg-gray-800 bg-opacity-50 transition-opacity duration-300 rounded-md'>
+                      {/* Heart Icon */}
+                      <button
+                        className='bg-white p-2 rounded-full text-gray-700 hover:text-red-500 transition-colors duration-200'
+                        onClick={() => {
+                          addFavoriteItems(
+                            product.productId,
+                            product.title,
+                            product.image,
+                            product.price
+                          );
+                        }}
+                      >
+                        <GrFavorite className='w-6 h-6' />
+                      </button>
+                      {/* Cart Icon */}
+                      <button
+                        className='bg-white p-2 rounded-full text-gray-700 hover:text-green-500 transition-colors duration-200'
+                        onClick={() => {
+                          onClickToAddCart(
+                            product.productId,
+                            product.title,
+                            product.price,
+                            product.image
+                          );
+                        }}
+                      >
+                        <ShoppingCart className='w-6 h-6' />
+                      </button>
+                    </div>
                   </HoverCardTrigger>
-                  <HoverCardContent className='absolute -top-56 -left-20 w-40 h-28  bg-inherit border-none  flex items-center justify-center mb-2'>
-                    <Button className='rounded-lg px-4 py-2' variant='outline'>
-                      <ShoppingCart className='mr-2' /> Cart
-                    </Button>
-                  </HoverCardContent>
                 </HoverCard>
+
                 <div>
-                  <p className='font-bold w-52 h-12 line-clamp-2 overflow-hidden'>
+                  <p
+                    className='font-bold w-52 h-12 line-clamp-2 overflow-hidden cursor-pointer'
+                    onClick={() => {
+                      goToProduct(product._id);
+                    }}
+                  >
                     {product.title}
                   </p>
                 </div>
@@ -291,45 +389,6 @@ export default function Products() {
               </div>
             </div>
           ))}
-
-          {/* {products &&
-            products.map((product) => (
-              <div key={product._id}>
-                <Card className='h-full'>
-                  <CardHeader>
-                    <div className='w-full h-56 flex items-center justify-center overflow-hidden rounded-lg'>
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        className='w-full h-full object-contain'
-                        onClick={() => {
-                          goToProduct(product._id);
-                        }}
-                      />
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className='h-24'>
-                      <p className='font-bold'>{product.title}</p>
-                      <p className='mt-2'>Rs.{product.price}</p>
-                    </div>
-                    <Button
-                      className='my-4 w-full'
-                      onClick={() => {
-                        onClickToAddCart(
-                          product.productId,
-                          product.title,
-                          product.price,
-                          product.image
-                        );
-                      }}
-                    >
-                      Add to Cart
-                    </Button>
-                  </CardContent>
-                </Card>
-              </div>
-            ))} */}
         </div>
       </div>
     </div>
