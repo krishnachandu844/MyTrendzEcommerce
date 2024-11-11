@@ -5,7 +5,7 @@ import { TailSpin } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 import { CartContext } from "../context/cartContext";
 import { GrFavorite } from "react-icons/gr";
-
+import { motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 import { HoverCard, HoverCardTrigger } from "@/components/ui/hover-card";
 
@@ -327,7 +327,13 @@ export default function Products() {
         <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 m-10 gap-2'>
           {products.map((product) => (
             <div key={product._id} className=''>
-              <div className='product-card p-4 h-auto space-y-6'>
+              <motion.div
+                className='product-card p-4 h-auto space-y-6'
+                whileHover={{ scale: 0.9 }}
+                whileTap={{ scale: 1.2 }}
+                transition={{ type: "spring", stiffness: 200, damping: 20 }}
+                style={{ transformOrigin: "center", zIndex: 1 }}
+              >
                 <HoverCard>
                   <HoverCardTrigger className='relative group'>
                     <div className='h-52'>
@@ -340,7 +346,14 @@ export default function Products() {
 
                     <div className='absolute inset-0 flex items-center justify-center space-x-4 opacity-0 group-hover:opacity-100 bg-gray-800 bg-opacity-50 transition-opacity duration-300 rounded-md'>
                       {/* Heart Icon */}
-                      <button
+                      <motion.button
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 1.2 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 20,
+                        }}
                         className='bg-white p-2 rounded-full text-gray-700 hover:text-red-500 transition-colors duration-200'
                         onClick={() => {
                           addFavoriteItems(
@@ -352,9 +365,16 @@ export default function Products() {
                         }}
                       >
                         <GrFavorite className='w-6 h-6' />
-                      </button>
+                      </motion.button>
                       {/* Cart Icon */}
-                      <button
+                      <motion.button
+                        whileHover={{ scale: 1.2 }}
+                        whileTap={{ scale: 1.2 }}
+                        transition={{
+                          type: "spring",
+                          stiffness: 200,
+                          damping: 20,
+                        }}
                         className='bg-white p-2 rounded-full text-gray-700 hover:text-green-500 transition-colors duration-200'
                         onClick={() => {
                           onClickToAddCart(
@@ -366,7 +386,7 @@ export default function Products() {
                         }}
                       >
                         <ShoppingCart className='w-6 h-6' />
-                      </button>
+                      </motion.button>
                     </div>
                   </HoverCardTrigger>
                 </HoverCard>
@@ -386,7 +406,7 @@ export default function Products() {
                     Rs.{product.price}
                   </h1>
                 </div>
-              </div>
+              </motion.div>
             </div>
           ))}
         </div>

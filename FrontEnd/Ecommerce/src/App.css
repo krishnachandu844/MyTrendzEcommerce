@@ -43,12 +43,10 @@
 }
 
 /*Home-Container*/
-.home-page-bg-img {
-  background-image: url(../assets/HomSectionImages/HomeFrame.jpg);
-  background-size: cover;
-  height: 100vh;
+.home-gradient {
+  background-color: #0093e9;
+  background-image: linear-gradient(160deg, #0093e9 0%, #80d0c7 100%);
 }
-
 .home-page-head {
   color: #ffae5d;
 }
@@ -105,4 +103,17 @@
   width: 450px;
   height: 410px;
   border: 1px solid #eaeaea;
+}
+
+@media only screen and (min-width: 320px) {
+  /*Home-Container*/
+  .home-page-bg-img {
+    height: 450px !important;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+  }
+  .nav-bar {
+    width: 400px;
+  }
 }

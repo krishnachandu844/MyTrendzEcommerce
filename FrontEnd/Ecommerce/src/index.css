@@ -9,3 +9,17 @@
   font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
 }
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/**hero-section**/
+.hero-section {
+  background-image: url("../assets/HomSectionImages/HomeFrame.jpg");
+  height: 100vh;
+  padding: 10em 10em;
+  background-size: cover;
+  background-position: center;
+}

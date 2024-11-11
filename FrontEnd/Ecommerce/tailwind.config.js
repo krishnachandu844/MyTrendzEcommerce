@@ -1,5 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 
+import { Laptop } from "lucide-react";
+
 export default {
   darkMode: ["class"],
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],

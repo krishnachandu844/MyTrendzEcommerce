@@ -159,9 +159,18 @@ export default function Favorite() {
           {favoriteItems &&
             favoriteItems.map((item) => (
               <div
-                className='card shadow-lg rounded-xl p-8 relative'
+                className='card shadow-lg rounded-xl p-6 relative'
                 key={item._id}
               >
+                <Button
+                  variant='outline'
+                  className='flex justify-center absolute inset-0 w-14  mt-2 left-80 rounded-full border-none'
+                  onClick={() => {
+                    deleteFavoriteItem(item._id);
+                  }}
+                >
+                  <IoCloseOutline className='h-6 w-6' />
+                </Button>
                 <div className=' w-full h-48 mb-4 flex items-center justify-center overflow-hidden rounded-lg'>
                   <img
                     src={item.image}
@@ -179,29 +188,22 @@ export default function Favorite() {
                   </h2>
                 </div>
                 <div className=' mt-2 mb-1 flex justify-between space-x-6 '>
-                  <Button
-                    variant='outline'
-                    className='flex justify-center absolute inset-0 w-16  mt-2 left-80 rounded-full border-none'
-                    onClick={() => {
-                      deleteFavoriteItem(item._id);
-                    }}
-                  >
-                    <IoCloseOutline className='h-6 w-6' />
-                  </Button>
-                  <Button
-                    className=' flex items-center justify-center bg-homePrimary text-white hover:text-white hover:bg-homePrimary'
-                    onClick={() => {
-                      onClickToAddCart(
-                        item.productId,
-                        item.title,
-                        item.price,
-                        item.image
-                      );
-                    }}
-                  >
-                    <ShoppingCart className='h-6 w-6 mr-3' />
-                    Add to Cart
-                  </Button>
+                  <div className=''>
+                    <Button
+                      className=' flex items-center justify-center bg-homePrimary text-white hover:text-white hover:bg-homePrimary'
+                      onClick={() => {
+                        onClickToAddCart(
+                          item.productId,
+                          item.title,
+                          item.price,
+                          item.image
+                        );
+                      }}
+                    >
+                      <ShoppingCart className='h-6 w-6 mr-2' />
+                      Add to Cart
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
